@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{match.Creator.owner.username}}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'match.css' %}">
+    <script>
+        var reloadInterval = 15000;
+        var rawStartedValue = '{{ match.started }}';
+        var creator = '{{match.Creator.id}}'
+        var valjoin = '{{match.Joined}}'
+        if (rawStartedValue == 'False'){
+            started=false
+        }
+        else{
+            started=true
+        }
+
+        if (valjoin == 'None'){
+            joined=false
+        }
+        else{
+            joined=true
+        }
+
+        if(creator == '{{account.id}}'){
+            var account = true
+        }
+        else{
+            var account = false
+        }
+        function reloadPage() {
+            location.reload(true);
+        }
+        var reloadTimer = setTimeout(reloadPage, reloadInterval);
+        console.log(joined)
+        if (started || (account && joined)){
+            clearTimeout(reloadTimer);
+        }
+    </script>
+<body>
+    {% include 'navbar.html' %}
+    <div class="started">
+        {% if match.started %}
+            <h1>Match Started</h1>
+            <form method="post">
+                <button>Submit Result</button>           
+            </form>
+        {% endif %}
+    </div>
+    <div class="secundary_box">
+        <h2>Players</h2>
+        <a class="a_player" href="{% url 'profile' match.Creator.id %}">
+            <div class="players">
+                <img src="{{match.Creator.profile_picture.url}}" alt="">
+                <div class="third_box">
+                    <p>{{match.Creator.owner.username}}</p>
+                    <div class="trophy_box">
+                        <img id="trophy" src="../../media/all_stuff/Trophy.png" alt="">
+                        <p>{{match.Creator.points}}</p>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="secundary_box">
+        {% if not match.Joined%}
+        <div>
+            <div class="players oponent">
+                <img class="gif" src="../../media/all_stuff/loading.gif" alt="">
+                <p>Waiting for players</p>
+            </div>
+        {% else %}
+        <a class="a_player" href="{% url 'profile' match.Joined.id %}">
+            <div class="players">
+                <img src="{{match.Joined.profile_picture.url}}" alt="">
+                <div class="third_box">
+                    <p>{{match.Joined.owner.username}}</p>
+                    <div class="trophy_box">
+                        <img id="trophy" src="../../media/all_stuff/Trophy.png" alt="">
+                        <p>{{match.Joined.points}}</p>
+                    </div>
+                </div>
+            </div>
+        </a>
+        {% endif %}
+    </div>
+    <div class="match_inf">
+        <table>
+            <tr>
+                <th>Region</th>
+                <th>Court</th>
+                <th>Ubication</th>
+            </tr>
+            <tr>
+                <td>{{match.court.region}}</td>
+                <td>{{match.court.Name}}</td>
+                <td>{{match.court.Location}}</td>
+            </tr>
+        </table>
+    </div>
+    <form method="post">
+        {% csrf_token %}
+        {% if match.Joined and account == match.Creator and not match.started %}
+            <button name="start">Start Match</button>
+    
+        {% elif account == match.Creator and not match.started %}
+            <button name="delete">Delete</button>
+
+        {% elif not account == match.Creator and not match.started  %}
+            <p><b>{{match.Creator}}</b> needs to start the match</p>
+            <div id="button">
+                <button name="leave">Leave</button>
+            </div>
+        {% endif %}
+    </form>
+
+    
+</body>
+</html>

@@ -1,0 +1,130 @@
+body{
+    margin: 0;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+nav{
+    border-top:2px solid #000;
+    border-bottom: 2px solid #000;
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.button_option{
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-top: 12px;
+}
+
+.dropdown{
+    z-index: 1000;
+    
+}
+
+.dropdown .content a{
+    color: #000;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 150px;
+    display: block;
+    text-decoration: none;
+    border-bottom: 2px solid #000;
+    text-align: start;
+    margin: 0;
+    padding-left: 10px;
+}
+
+.dropdown .content #last{
+    display: flex;
+    flex-direction: row;
+    border-bottom: none;
+}
+
+.dropdown .content #last p{
+    margin: 0;
+    width: 100px;
+}
+
+.dropdown .content #last img{
+    position: absolute;
+    left: 76px;
+    width: 22px;
+}
+
+.dropdown .content #title_content{
+    background-color: rgba(255, 72, 72, 0.795);
+    margin: 0;
+    height: max-content;
+    border-top-right-radius: 15px;
+    color: #fff;
+    border-bottom: 2px solid #000;
+}
+
+.dropdown .content #title_content p{
+    padding: 10px 0;
+    margin: 0;
+    margin-left: 10px;
+}
+
+.dropdown .content{
+    display: none;
+    background-color: #9c9c9c;
+    position: absolute;
+    min-width: 100px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border-bottom:2px solid #000;
+    border-top:2px solid #000;
+    border-right:2px solid #000;
+    
+}
+
+.dropdown:hover .content{
+    display: block;
+}
+
+.dropdown .content a:hover{
+    display: block;
+    background-color: #b8b7b7;
+}
+
+.dropdown .content #last:hover{
+    border-bottom-right-radius: 15px;
+}
+
+.options{
+    width: 40px;
+    height: 40px;
+    margin-left: 20px;
+    
+}
+
+.options .line1,.line2,.line3{
+    height: 0px;
+    border: 1px solid #000;
+    margin-top: 11px;
+    border-radius: 3px;
+}
+.profile_a{
+    text-decoration: none;
+    margin-right: 20px;
+    margin-top: 15px;
+}
+.profile{
+    width: 40px;
+    height: 40px;
+}
+
+.profile img{
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    border: 2px solid #000;
+}
+.logo{
+    margin-top:15px;
+    width: 42px;
+    height: 42px;
+}

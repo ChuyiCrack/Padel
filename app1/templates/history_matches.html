@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'history.css' %}">
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <div class="current">
+        <h3>Current Match</h3>
+        {% if current %}
+            <a href="{% url 'match' current.id %}">
+            {% if current.Joined %}
+                <p id="text">In a match with: </p>
+                <div class="principal_box">
+                {% if current.Creator == account %}
+                    <img class="enemie" src="{{current.Joined.profile_picture.url}}" alt="">
+                    <div class="sub_box">
+                        <p class="name_acc">{{current.Joined.owner.username}}</p>
+                        <div class="third_box">
+                            <img id="trophy" src="../../media/all_stuff/Trophy.png" alt="">
+                            <p>{{current.Joined.points}}</p>
+                        </div>                
+                    </div>
+                {% else %}
+                    <img class="enemie" src="{{current.Creator.profile_picture.url}}" alt="">
+                    <div class="sub_box">
+                        <p class="name_acc">{{current.Creator.owner.username}}</p>
+                        <div class="third_box">
+                            <img id="trophy" src="../../media/all_stuff/Trophy.png" alt="">
+                            <p>{{current.Creator.points}}</p>
+                        </div>                
+                    </div>
+                {% endif %}
+                </div>
+            {% else %}
+                <div class="waiting">
+                    <p>{{current.court.Name}}</p>
+                    <p>{{current.date_created}}</p>
+                    <p style="color: rgb(32, 135, 204);">Waiting For players</p>
+                    <img id="gif" src="../../media/all_stuff/loading.gif" alt="">
+                </div>
+            {% endif %}
+            </a>
+        {% else %}
+            <p id="notfound">There isn't any Matches right now</p>
+            <img id="gif" src="../../media/all_stuff/tennis.gif" alt="">
+        {% endif %}
+    </div>
+</body>
+</html>

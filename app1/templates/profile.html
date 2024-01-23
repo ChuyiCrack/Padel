@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% if account.owner == request.user %}
+    <title>My Profile</title>
+    {% else %}
+    <title>{{account.owner.username}}</title>
+    {% endif %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'profile.css' %}">
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <div class="principal_box">
+        <div class="boxy">
+            <div class="img_container">
+                {% if account.homepage_picture %}
+                    <img src="{{account.homepage_picture.url}}" alt="">
+                {% else %}
+                    <img src="../../media/profile_picture/default_homepage2.jpg" alt="">
+                {% endif %}
+            </div>
+            <div class="profile_picture">
+                <img src="{{target_account.profile_picture.url}}" alt="">
+                <h2>{{target_account.owner.username}}</h2>
+                {% if target_account.owner == request.user %}
+                <a href="{% url 'edit' %}">Edit</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="history_match">
+            <div id="top-div">
+                <p>History Matches</p>
+                <p>Ranked Points: {{account.points}}</p>
+            </div>
+            <div class="box_history">
+                <p>win (3-0)</p>
+            </div>
+        </div>
+    </div>
+</body>

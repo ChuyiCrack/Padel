@@ -1,0 +1,50 @@
+.principal_box{
+    text-align: center;
+    
+}
+
+.box_points{
+    display: flex;
+    flex-direction: row;
+    border: 2px solid #000;
+    margin: auto;
+    justify-content: center;
+    width: fit-content;
+    padding: 5px 15px;
+    border-radius: 15px;
+    background-color: rgb(235, 232, 49);
+}
+
+table,th,td{
+    text-align: left;
+    border: 2px solid #000;
+}
+
+table{
+    border-collapse: collapse;
+    margin: auto;
+    margin-top: 25px;
+}
+
+th,td{
+    padding:5px;
+}
+.box_points p{
+    margin: 0;
+}
+
+.box_points img{
+    width: 25px;
+    height: 25px;
+}
+
+@media only screen and (min-width: 700px) {
+    table{
+        width: 60%;
+    }
+
+    th,td{
+        padding:10px;
+    }
+
+}

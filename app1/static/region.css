@@ -1,0 +1,38 @@
+body{
+    text-align: center;
+}
+
+
+.region_box{
+    position: relative;
+    width: fit-content;
+    margin: auto;
+}
+
+
+.region_box img{
+    height: 250px;
+    width: 270px;
+    margin: auto;
+    border-radius: 25px;
+    border-bottom: 3 px solid #000;
+}
+
+.region_box p{
+    color: #fff;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-weight: 900;
+    position: absolute;
+    bottom: 8px;
+    width: 100%;
+    background-color: rgba(65, 65, 65, 0.507);
+    margin:0;
+    box-sizing: border-box;
+    padding: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.cointaner_p{
+    background-color: red;
+}

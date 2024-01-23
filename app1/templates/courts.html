@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courts</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'court.css' %}">
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <h1>{{region.Name}}</h1>
+    <div class="principal_cointainer">
+        {% for court in courts%}
+        <a class="link_court" href="{% url 'matching' court.id %}">
+            <div class="court_box">
+                <img src="{{court.image.url}}" alt="">
+                <p>{{court.Name}}</p>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    
+</body>
+</html>

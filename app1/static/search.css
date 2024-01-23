@@ -1,0 +1,52 @@
+h1{
+    text-align: center;
+}
+
+.principal_box{
+    width: 85%;
+    height: fit-content;
+    margin: auto;
+}
+
+.match{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+    width: 100%;
+    border: 2px solid #000;
+    height: 50px;
+    border-radius: 10px;
+}
+
+.principal_box a{
+    text-decoration: none;
+    color: #000;
+}
+
+.match img{
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    width: 50px;
+}
+
+.inf p{
+    width: 100px;
+    overflow-x: hidden;
+    margin: 0;
+    text-align: center;
+}
+
+.inf{
+    margin-right: 20px;
+}
+
+.match_inf{
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.match_inf p{
+    width: 200px;
+    margin: 0;
+}

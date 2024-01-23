@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regions</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'region.css' %}">
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <h1>Regions</h1>
+    <p>Select The Region</p>
+    {% for region in regions%}
+        <a href="{% url 'courts' region.id %}">
+            <div class="region_box">
+                <div class="cointaner_p">
+                    <p>{{region.Name}}</p>
+                </div>
+                <img src="{{region.image.url}}" alt="">
+            </div>
+        </a>
+    {% endfor %}
+</body>
+</html>

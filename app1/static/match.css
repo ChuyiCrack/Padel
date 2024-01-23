@@ -1,0 +1,102 @@
+.main_box{
+    text-align: center;
+}
+
+.secundary_box{
+    text-align: center;
+    width: 80%;
+    margin: auto;
+    margin-bottom: 20px;
+}
+.players{
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+    height: 40px;
+    align-items: center;
+    border: 2px solid #000;
+    border-radius: 5px;
+    justify-content: space-between;
+}
+
+.players #trophy{
+    width: 20px;
+    height: 20px;
+    margin-right: 2px;
+}
+
+.players img{
+    width: 40px;
+    height: 40px;
+}
+
+.a_player{
+    text-decoration: none;
+    color: #000;
+    cursor: pointer;
+}
+
+.oponent{
+    justify-content: center;
+}
+
+.players .gif{
+    width: 25px;
+    height: 25px;
+    margin-right: 5px;
+}
+
+.trophy_box{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 15px;
+}
+
+.third_box{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+form{
+    width: fit-content;
+    margin: auto;
+    margin-top: 15px;
+    justify-content: center;
+}
+
+
+
+#button{
+    width: fit-content;
+    margin: auto;
+}
+
+button{
+    padding: 5px 10px;
+}
+
+
+table{
+    border: 2px solid #000;
+    border-collapse: collapse;
+    margin: 20px ;
+}
+
+td,th{
+    border: 2px solid #000;
+}
+
+
+.started{
+    text-align: center;
+}
+
+.match_inf table{
+    margin: auto;
+}

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search_Match</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'search.css' %}">
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <h1>Active Matches</h1>
+    <div class="principal_box">
+        {% for match in matches %}
+            <a href="{% url 'join' match.id %}">
+                <div class="match">
+                    <img src="{{match.Creator.profile_picture.url}}" alt="">
+                    <div class="inf">
+                        <p>{{match.Creator}}</p>
+                        <p><b>Players:</b> 1/2</p>
+                    </div>
+                    <div class="match_inf">
+                        <p><b>Region:</b> {{match.court.region}}</p>
+                        <p><b>Court:</b> {{match.court}}</p>
+                    </div>
+                </div>
+            </a>
+
+        {% endfor %}
+    </div>
+</body>
+</html>

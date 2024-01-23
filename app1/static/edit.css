@@ -1,0 +1,29 @@
+h1{
+    text-align: center;
+}
+
+.form-container{
+    text-align:center ;
+    justify-content: center;
+}
+
+label{
+    font-weight: 900;
+    font-size: 20px;
+}
+form input[type="text"],
+form input[type="file"],
+form select {
+    display: inline;
+    margin-bottom: auto;
+    padding: 8px;
+}
+.button_div{
+    display: flex;
+    justify-content: center;
+}
+
+.button_submit{
+    margin: 10px;
+    padding: 5px 5px;
+}

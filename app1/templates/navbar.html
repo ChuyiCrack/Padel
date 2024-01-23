@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'navbar.css' %}">
+</head>
+<body>
+    <nav>
+        <div class="dropdown">
+            <button class="button_option">
+                <div class="options">
+                    <div class="line1"></div>
+                    <div class="line2"></div>
+                    <div class="line3"></div>
+                </div>
+            </button>
+            <div class="content">
+                <div id="title_content">
+                    <p>Options</p>
+                </div>
+                <a href="{% url 'search_match' %}">Search Matches</a>
+                <a href="{% url 'history_matches' %}">History Matches</a>
+                <a id="last" href="{% url 'logout' %}">
+                    <img src="../../media/all_stuff/X_icon.png" alt="">
+                    <p>Log-out</p>
+                </a>
+            </div>
+        </div>
+        
+        <a href="{% url 'index' %}">
+            <img class="logo" src="../../media/all_stuff/Tennis_Ball_PNG_Clip_Art-1352(1).png" alt="">
+        </a>
+        <a class="profile_a" href="{% url 'profile' account.id %}">
+            <div class="profile">
+                <img src="{{account.profile_picture.url}}" alt="">
+            </div>
+        </a>
+    </nav>
+</body>
+</html>
