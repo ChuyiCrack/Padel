@@ -50,3 +50,13 @@ h1{
     width: 200px;
     margin: 0;
 }
+
+.first_box{
+    display: flex;
+    flex-direction: column;
+}
+
+#gif{
+    margin: auto;
+    width: 100px;
+}

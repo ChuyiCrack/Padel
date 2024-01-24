@@ -14,5 +14,6 @@ urlpatterns =[
    path('match/<int:pk>',views.match,name='match'),
    path('history_matches/',views.history_matches,name='history_matches'),
    path('search_match/',views.search_match,name='search_match'),
-   path('join_match/<int:pk>',views.join_match,name='join')
+   path('join_match/<int:pk>',views.join_match,name='join'),
+   path('results/<int:pk>',views.submit_result,name='submit_result')
 ]

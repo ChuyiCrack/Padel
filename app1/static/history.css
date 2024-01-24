@@ -18,7 +18,7 @@
 }
 
 .enemie{
-    width: 70px;
+    width: 80px;
 }
 
 .current h3{
@@ -42,6 +42,8 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
+
+    margin-top: 17px;
 }
 .third_box{
     display: flex;
@@ -66,4 +68,38 @@
 
 #text{
     margin-bottom: 10px;
+}
+
+.inf{
+    border: 2px solid #000;
+    align-items: center;
+    width: 150px;
+    margin: auto;
+    padding: 10px 20px;
+}
+
+.inf .third_box{
+    height:fit-content;
+    height: 20px;
+}
+
+.inf .sub_box{
+    height:fit-content;
+    height: 25px;
+    margin-bottom: 15px;
+}
+
+.inf .sub_box p{
+    margin: 0;
+}
+
+#vs{
+    text-align: center;
+    font-size: 40px;
+    margin: 10px 0;
+}
+
+
+.main_box{
+    margin-top: 50px;
 }

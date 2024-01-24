@@ -45,9 +45,10 @@
     <div class="started">
         {% if match.started %}
             <h1>Match Started</h1>
-            <form method="post">
-                <button>Submit Result</button>           
-            </form>
+            <div class="submit">
+                <p>When you finish the match both need to upload results</p>
+                <a href="{% url 'submit_result' match.id %}">Submit results</a>          
+            </div>
         {% endif %}
     </div>
     <div class="secundary_box">
@@ -67,7 +68,6 @@
     </div>
     <div class="secundary_box">
         {% if not match.Joined%}
-        <div>
             <div class="players oponent">
                 <img class="gif" src="../../media/all_stuff/loading.gif" alt="">
                 <p>Waiting for players</p>
@@ -86,7 +86,6 @@
             </div>
         </a>
         {% endif %}
-    </div>
     <div class="match_inf">
         <table>
             <tr>

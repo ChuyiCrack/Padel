@@ -9,7 +9,17 @@
 </head>
 <body>
     {% include 'navbar.html' %}
-    <h1>Active Matches</h1>
+    <div class="first_box">
+        {% if matches|length == 0%}
+            <h1>No current matches</h2>
+            <img id="gif" src="../../media/all_stuff/tennis.gif" alt="">
+            
+        
+        {% else %}
+            <h1>current Matches</h1>
+        {% endif %}
+
+    </div>
     <div class="principal_box">
         {% for match in matches %}
             <a href="{% url 'join' match.id %}">
@@ -25,8 +35,8 @@
                     </div>
                 </div>
             </a>
-
         {% endfor %}
+        
     </div>
 </body>
 </html>

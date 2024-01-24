@@ -29,6 +29,8 @@
 .players img{
     width: 40px;
     height: 40px;
+    border-bottom-left-radius: 3px;
+    border-top-left-radius: 3px;
 }
 
 .a_player{
@@ -63,18 +65,21 @@
     
 }
 
-form{
+.submit{
     width: fit-content;
-    margin: auto;
-    margin-top: 15px;
+   margin: 15px 20px 0 15px;
     justify-content: center;
+    margin: auto;
 }
 
-
-
-#button{
-    width: fit-content;
-    margin: auto;
+.submit a{
+    margin: 0;
+    text-decoration: none;
+    border: 2px solid #000;
+    border-radius: 5px;
+    padding: 2px 5px;
+    background-color: #34a3cf;
+    color: #ffffff;
 }
 
 button{
@@ -96,7 +101,19 @@ td,th{
 .started{
     text-align: center;
 }
-
+.match_inf{
+    margin-top: 20px;
+}
 .match_inf table{
     margin: auto;
+}
+
+form p{
+    margin: 0 20px 10px 20px;
+}
+@media only screen and (min-width: 700px) {
+   .secundary_box{
+    width: 400px;
+   }
+
 }

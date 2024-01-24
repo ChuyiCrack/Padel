@@ -194,8 +194,6 @@ def history_matches(request):
     
     else:
         context['current']=None
-
-    print(context['current'])
     
     
     return render(request,'history_matches.html',context)
@@ -232,5 +230,15 @@ def join_match(request,pk):
     }
     return render(request,'join_match.html',context)
 
+def submit_result(request,pk):
+    account=Account.objects.get(owner=request.user)
+    target_match=Match.objects.get(id=pk)
+    if not (account==target_match.Joined or account==target_match.Creator):
+        return redirect('home')
+    context={
+        'account':account,
+        'match':target_match
+    }
+    return render(request,'submit_result.html',context)
 
 
