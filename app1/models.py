@@ -47,9 +47,19 @@ class Match(models.Model):
     Joined=models.ForeignKey(Account,blank=True,on_delete=models.SET_NULL,null=True,related_name='oponent_match')
     court=models.ForeignKey(Courts,blank=False,on_delete=models.SET_NULL,null=True,related_name='court_match')
     date_created=models.DateTimeField(default=timezone.now)
-    Winner=models.ForeignKey(Account,blank=True,on_delete=models.SET_NULL,null=True,related_name='won_matches')
-    Looser=models.ForeignKey(Account,blank=True,on_delete=models.SET_NULL,null=True,related_name='losed_matches')
 
     def __str__(self):
         return f'{self.Creator.owner.username} -- {self.id}'
+    
+class result(models.Model):
+    target_match=models.ForeignKey(Match,on_delete=models.CASCADE,related_name='match')
+    winner=models.ForeignKey(Account,blank=True,on_delete=models.SET_NULL,null=True,related_name='won_matches')
+    looser=models.ForeignKey(Account,blank=True,on_delete=models.SET_NULL,null=True,related_name='losed_matches')
+    res_creator=models.CharField(max_length=15,default='NONE',blank=True)
+    res_joined=models.CharField(max_length=15,default='NONE',blank=True)
+    creator_score=models.PositiveIntegerField(blank=True, default=0)
+    joined_score=models.PositiveIntegerField(blank=True, default=0)
+
+    def __str__(self):
+        return f'REsult of the match {self.target_match.id}'
 

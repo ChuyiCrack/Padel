@@ -76,6 +76,7 @@
     width: 150px;
     margin: auto;
     padding: 10px 20px;
+    border-radius: 10px;
 }
 
 .inf .third_box{
@@ -100,6 +101,53 @@
 }
 
 
-.main_box{
-    margin-top: 50px;
+
+.input_container{
+    display: flex;
+    border: 2px solid #000;
+    justify-content: center;
+    width: fit-content;
+    margin: auto;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    border-radius: 5px;
+}
+
+.input_container input{
+    width: 100px;
+}
+
+.input_container label{
+    display: inline-block;
+    width: 100px;
+    text-align: center;
+}
+
+#texti{
+    text-align: center;
+}
+
+form #help{
+    text-align: center;
+    margin: 20px;
+}
+
+form .button_container{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.waiting{
+    text-align: center;
+    margin: auto;
+}
+.waiting p{
+    font-size: 20px;
+    font-weight: 700;
+}
+.waiting img{
+    width: 100px;
+    display: flex;
+    margin: auto;
 }

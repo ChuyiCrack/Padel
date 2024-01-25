@@ -5,7 +5,7 @@ from django.db.models import Q
 from django.http import HttpResponse, HttpResponseNotFound
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import login,logout
-from .models import Region,Courts,Account,Match
+from .models import Region,Courts,Account,Match,result
 from django.conf import settings
 import googlemaps
 
@@ -232,13 +232,32 @@ def join_match(request,pk):
 
 def submit_result(request,pk):
     account=Account.objects.get(owner=request.user)
-    target_match=Match.objects.get(id=pk)
-    if not (account==target_match.Joined or account==target_match.Creator):
+    targeted_match=Match.objects.get(id=pk)
+    try:
+        Result=result.objects.get(target_match=targeted_match)
+
+    except result.DoesNotExist:
+        Result=result.objects.create(target_match=targeted_match)
+    if not (account==targeted_match.Joined or account==targeted_match.Creator):
         return redirect('home')
+    
+    if request.method == 'POST':
+        creator=request.POST.get('creator')
+        oponent=request.POST.get('oponent')
+        if targeted_match.Creator == account:
+            Result.res_creator=f'{creator}-{oponent}'
+            print(Result)
+            Result.save()
+            return redirect('submit_result',targeted_match.id)
+        
+        else:
+            Result.res_joined=f'{creator}-{oponent}'
+            Result.save()
+            
     context={
         'account':account,
-        'match':target_match
+        'match':targeted_match,
+        'result':Result
     }
     return render(request,'submit_result.html',context)
-
 

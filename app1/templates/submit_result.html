@@ -9,18 +9,8 @@
 </head>
 <body>
     {% include 'navbar.html' %}
+    <p id="texti">Is importat to be really <b>honest</b> when you are uploading the results.</p>
     <div class="main_box">
-        <div class="principal_box inf">
-            <img class="enemie" src="{{match.Joined.profile_picture.url}}" alt="">
-                <div class="sub_box">
-                    <p class="name_acc">{{match.Joined.owner.username}}</p>
-                    <div class="third_box">
-                        <img id="trophy" src="../../media/all_stuff/Trophy.png" alt="">
-                        <p>{{match.Joined.points}}</p>
-                    </div>                
-                </div>
-        </div> 
-        <h2 id="vs">VS</h2>
         <div class="principal_box inf">
             <img class="enemie" src="{{match.Creator.profile_picture.url}}" alt="">
                     <div class="sub_box">
@@ -31,14 +21,45 @@
                             </div>                
                     </div>
         </div>
+        <h2 id="vs">VS</h2>
+        <div class="principal_box inf">
+            <img class="enemie" src="{{match.Joined.profile_picture.url}}" alt="">
+                <div class="sub_box">
+                    <p class="name_acc">{{match.Joined.owner.username}}</p>
+                    <div class="third_box">
+                        <img id="trophy" src="../../media/all_stuff/Trophy.png" alt="">
+                        <p>{{match.Joined.points}}</p>
+                    </div>                
+                </div>
+        </div>   
     </div>
-    <form method="">
-        <label for="creator">{{match.Creator}}</label>
-        <input type="number" name="creator" id="creator" max="6" min="0">
-        <label for="oponent">{{match.Joined}}</label>
-        <input type="number" name="oponent" id="oponent" max="6" min="0">
+    <form method="post">
+        {% csrf_token %}
+        <p id="help">Put the number of sets that each one won on the inputs of below</p>
+        <div class="input_container">
+            <label for="creator">{{match.Creator}}</label>
+            <input type="number" name="creator" id="creator" max="6" min="0">
+        </div>
+        <div class="input_container">
+            <label for="oponent">{{match.Joined}}</label>
+            <input type="number" name="oponent" id="oponent" max="6" min="0">
+        </div>
+        <div class="button_container">
+            <button type="submit" name="submit">submit</button>
+        </div>
     </form>
-            
+    {% if account == match.Creator %}
+        {% if not result.res_creator == 'NONE' %}
+        <div class="waiting">
+            <p>Waiting for the other player to sending results</p>
+            <img src="../../media/all_stuff/tennis.gif" alt="">
+        </div>
+        {% endif %}
+    
+    {% else %}
+    
+    
+    {% endif %}    
 
     
     
