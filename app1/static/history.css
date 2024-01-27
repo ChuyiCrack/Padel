@@ -151,3 +151,10 @@ form .button_container{
     display: flex;
     margin: auto;
 }
+
+#message{
+    color: rgb(224, 77, 77);
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+}

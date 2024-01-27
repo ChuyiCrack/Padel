@@ -1,4 +1,5 @@
 from django.shortcuts import render,redirect
+from django.contrib import messages
 from .forms import CustomUserCreationForm,Edit_Account
 from django.contrib.auth.forms import AuthenticationForm
 from django.db.models import Q
@@ -184,10 +185,13 @@ def match(request,pk):
 
 def history_matches(request):
     account=Account.objects.get(owner=request.user)
+    message=messages.get_messages(request)
     context={
         'account':account,
+        'messages':message,
     }
     current=Match.objects.filter(Q(Active=True)&(Q(Creator=account)|Q(Joined=account)))
+    
     
     if current.exists():
         context['current']=current[0]
@@ -241,6 +245,54 @@ def submit_result(request,pk):
     if not (account==targeted_match.Joined or account==targeted_match.Creator):
         return redirect('home')
     
+    if Result.res_joined!='NONE' and Result.res_creator!='NONE':
+        if not (Result.res_joined==Result.res_creator):
+            messages.error(request,'The submits does not match')
+            Result.res_creator='NONE'
+            Result.res_joined='NONE'
+            Result.save()
+            return redirect('submit_result',targeted_match.id)
+
+        else:
+            targeted_match.Active=False
+            targeted_match.save()
+            count=0
+            score_creator=''
+            score_joined=''
+            for score in (Result.res_creator):
+                if score != '-':
+                    if count==0:
+                        score_creator=int(score)
+                        count+=1
+
+                    else:
+                        score_joined=int(score)
+            if score_creator>score_joined:
+                Result.winner=targeted_match.Creator
+                Result.looser=targeted_match.Joined
+                targeted_match.Creator.points+=35
+                targeted_match.Joined.points-=35
+                
+            
+            elif score_creator<score_joined:
+                Result.winner=targeted_match.Joined
+                Result.looser=targeted_match.Creator
+                targeted_match.Creator.points-=35
+                targeted_match.Joined.points+=35
+        
+            else:
+                Result.winner=None
+                Result.looser=None
+            
+            targeted_match.Creator.save()
+            targeted_match.Joined.save()
+            Result.creator_score=score_creator
+            Result.joined_score=score_joined
+            Result.save()
+            messages.info(request,'The match was successfully completed')
+            return redirect ('history_matches')
+
+
     if request.method == 'POST':
         creator=request.POST.get('creator')
         oponent=request.POST.get('oponent')

@@ -59,5 +59,8 @@
             <img id="gif" src="../../media/all_stuff/tennis.gif" alt="">
         {% endif %}
     </div>
+    {% for message in messages%}
+        <p id="message">{{message}}</p>
+    {% endfor %}
 </body>
 </html>
