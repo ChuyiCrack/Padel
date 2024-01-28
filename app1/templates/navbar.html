@@ -20,8 +20,25 @@
                 <div id="title_content">
                     <p>Options</p>
                 </div>
-                <a href="{% url 'search_match' %}">Search Matches</a>
-                <a href="{% url 'history_matches' %}">History Matches</a>
+                
+                <a class="option" href="{% url 'history_matches' %}">
+                    <div class="a_content">
+                        <p>History Matches</p>
+                        <img src="../../media/all_stuff/hisotry.png" alt="">
+                    </div>
+                </a>
+                <a class="option" href="{% url 'search_match' %}">
+                    <div class="a_content">
+                        <p>Search Matches</p>
+                        <img src="../../media/all_stuff/magnifying_glass.png" alt="">
+                    </div>
+                </a>
+                <a class="option" href="{% url 'regions' %}">
+                    <div class="a_content">
+                        <p>Create Match</p>
+                        <img src="../../media/all_stuff/Create.png" alt="">
+                    </div>
+                </a>
                 <a id="last" href="{% url 'logout' %}">
                     <img src="../../media/all_stuff/X_icon.png" alt="">
                     <p>Log-out</p>
@@ -32,11 +49,18 @@
         <a href="{% url 'index' %}">
             <img class="logo" src="../../media/all_stuff/Tennis_Ball_PNG_Clip_Art-1352(1).png" alt="">
         </a>
-        <a class="profile_a" href="{% url 'profile' account.id %}">
-            <div class="profile">
-                <img src="{{account.profile_picture.url}}" alt="">
-            </div>
-        </a>
+
+        <div class="profile_section">
+            <a class="notifications" href="">
+                <img src="../../media/all_stuff/notification_bell.png" alt="">
+            </a>
+            <a class="profile_a" href="{% url 'profile' account.id %}">
+                <div class="profile">
+                    <img src="{{account.profile_picture.url}}" alt="">
+                </div>
+            </a>
+        </div>
+        
     </nav>
 </body>
 </html>

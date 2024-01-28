@@ -9,6 +9,7 @@ nav{
     padding: 10px 0;
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 .button_option{
@@ -27,13 +28,28 @@ nav{
     color: #000;
     padding-top: 10px;
     padding-bottom: 10px;
-    padding-right: 150px;
+    width: 250px;
     display: block;
     text-decoration: none;
     border-bottom: 2px solid #000;
     text-align: start;
     margin: 0;
     padding-left: 10px;
+}
+
+.a_content{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+.content .option p{
+    margin: 0;
+}
+.content .option img{
+    width: 20px;
+    height: 20px;
+    margin: 0 0 0 10px;
+    margin-top: 3px;
 }
 
 .dropdown .content #last{
@@ -49,8 +65,9 @@ nav{
 
 .dropdown .content #last img{
     position: absolute;
-    left: 76px;
+    left: 72px;
     width: 22px;
+    margin-top: 2px;
 }
 
 .dropdown .content #title_content{
@@ -110,7 +127,6 @@ nav{
 .profile_a{
     text-decoration: none;
     margin-right: 20px;
-    margin-top: 15px;
 }
 .profile{
     width: 40px;
@@ -124,7 +140,25 @@ nav{
     border: 2px solid #000;
 }
 .logo{
-    margin-top:15px;
     width: 42px;
     height: 42px;
+    margin-left: 35px;
+    margin-top: 10px;
+}
+.profile_section{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: fit-content;
+}
+
+
+.notifications img{
+    width: 30px;
+    margin-right: 7px;
+    margin-top: 5px;
+}
+
+.notifications{
+    display: flex;
 }

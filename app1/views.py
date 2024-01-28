@@ -199,7 +199,7 @@ def history_matches(request):
     else:
         context['current']=None
 
-    match_completed=result.objects.filter((Q(target_match__Active=False)&(Q(target_match__Creator=account)|Q(target_match__Joined=account))))
+    match_completed=result.objects.filter((Q(target_match__Active=False)&(Q(target_match__Creator=account)|Q(target_match__Joined=account)))).order_by('-target_match__date_created')
     context['history_matches']=match_completed
 
     

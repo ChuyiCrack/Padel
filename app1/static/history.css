@@ -169,7 +169,7 @@ form .button_container{
 .box_matches{
     border-radius: 10px;
     width: 75%;
-    height: 100px;
+    height: 210px;
     border: 2px solid #000;
     margin: auto;
     margin-top: 20px;
@@ -235,4 +235,10 @@ form .button_container{
     color: #000;
     
     
+}
+
+@media only screen and (min-width: 700px) {
+    .box_matches{
+        width: 500px;
+    }
 }
