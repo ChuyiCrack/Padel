@@ -59,6 +59,7 @@ class result(models.Model):
     res_joined=models.CharField(max_length=15,default='NONE',blank=True)
     creator_score=models.PositiveIntegerField(blank=True, default=0)
     joined_score=models.PositiveIntegerField(blank=True, default=0)
+    submited=models.BooleanField(default=False)
 
     def __str__(self):
         return f'REsult of the match {self.target_match.id}'

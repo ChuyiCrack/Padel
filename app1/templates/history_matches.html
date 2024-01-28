@@ -62,5 +62,75 @@
     {% for message in messages%}
         <p id="message">{{message}}</p>
     {% endfor %}
+    <div class="main_history">
+        <h2>History Matches</h2>
+        <div class="box_matches">
+            {% if history_matches|length > 0 %}
+                {% for result in history_matches  %}
+                    <a class="link_match" href="">
+                    {% if result.target_match.Creator == account  %}
+                        {% if result.winner == account %}
+                            <div class="match_box  winner">
+                                <div class="texti">
+                                    <p>Won</p>
+                                    <div class="trophy_box">
+                                        <img id="trophy" src="../../media/all_stuff/Trophy.png" alt="">
+                                        <p>+35</p>
+                                    </div>
+                                </div>
+                        {% else %}
+                            <div class="match_box looser">
+                                <div class="texti">
+                                    <p>Lost</p>
+                                    <div class="trophy_box">
+                                        <img id="trophy" src="../../media/all_stuff/Trophy.png" alt="">
+                                        <p>-35</p>
+                                    </div>
+                                </div>
+                        {% endif %}
+                                <img src="{{result.target_match.Joined.profile_picture.url}}" alt="">
+                                <div class="match_inf">
+                                    <p>{{result.target_match.Joined}}</p>
+                                    <p>{{result.creator_score}}-{{result.joined_score}}</p>
+                                    <p id="date">{{result.target_match.date_created}}</p>
+                                </div>
+                            </div>
+
+                    {% else %}
+                        {% if result.winner == account %}
+                        <div class="match_box  winner">
+                            <div class="texti">
+                                <p>Won</p>
+                                <div class="trophy_box">
+                                    <img id="trophy" src="../../media/all_stuff/Trophy.png" alt="">
+                                    <p>+35</p>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="match_box looser">
+                                <div class="texti">
+                                    <p>Lost</p>
+                                    <div class="trophy_box">
+                                        <img id="trophy" src="../../media/all_stuff/Trophy.png" alt="">
+                                        <p>-35</p>
+                                    </div>
+                                </div>
+                        {% endif %}
+                        <img src="{{result.target_match.Creator.profile_picture.url}}" alt="">
+                                <div class="match_inf">
+                                    <p>{{result.target_match.Creator}}</p>
+                                    <p>{{result.joined_score}}-{{result.creator_score}}</p>
+                                    <p id="date">{{result.target_match.date_created}}</p>
+                                </div>
+                            </div>
+                    {% endif %}
+                    </a>
+                {% endfor %}
+
+            {% else %}
+                <p>No results</p>
+            {% endif %}
+        </div>
+    </div>
 </body>
 </html>

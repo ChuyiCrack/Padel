@@ -198,7 +198,10 @@ def history_matches(request):
     
     else:
         context['current']=None
-    
+
+    match_completed=result.objects.filter((Q(target_match__Active=False)&(Q(target_match__Creator=account)|Q(target_match__Joined=account))))
+    context['history_matches']=match_completed
+
     
     return render(request,'history_matches.html',context)
 
@@ -242,10 +245,24 @@ def submit_result(request,pk):
 
     except result.DoesNotExist:
         Result=result.objects.create(target_match=targeted_match)
+
     if not (account==targeted_match.Joined or account==targeted_match.Creator):
         return redirect('home')
     
-    if Result.res_joined!='NONE' and Result.res_creator!='NONE':
+    if request.method == 'POST':
+        creator=request.POST.get('creator')
+        oponent=request.POST.get('oponent')
+        if targeted_match.Creator == account:
+            Result.res_creator=f'{creator}-{oponent}'
+            print(Result)
+            Result.save()
+            return redirect('submit_result',targeted_match.id)
+        
+        else:
+            Result.res_joined=f'{creator}-{oponent}'
+            Result.save()
+    
+    if Result.res_joined!='NONE' and Result.res_creator!='NONE' and Result.submited == False:
         if not (Result.res_joined==Result.res_creator):
             messages.error(request,'The submits does not match')
             Result.res_creator='NONE'
@@ -271,6 +288,7 @@ def submit_result(request,pk):
                 Result.winner=targeted_match.Creator
                 Result.looser=targeted_match.Joined
                 targeted_match.Creator.points+=35
+                targeted_match.Creator.wins+=1
                 targeted_match.Joined.points-=35
                 
             
@@ -278,33 +296,28 @@ def submit_result(request,pk):
                 Result.winner=targeted_match.Joined
                 Result.looser=targeted_match.Creator
                 targeted_match.Creator.points-=35
+                targeted_match.Joined.wins+=1
                 targeted_match.Joined.points+=35
         
             else:
                 Result.winner=None
                 Result.looser=None
             
+            targeted_match.Creator.played_matches+=1
+            targeted_match.Joined.played_matches+=1
             targeted_match.Creator.save()
             targeted_match.Joined.save()
             Result.creator_score=score_creator
             Result.joined_score=score_joined
+            Result.submited=True
             Result.save()
             messages.info(request,'The match was successfully completed')
             return redirect ('history_matches')
+    
+    elif Result.submited == True:
+        messages.info(request,'The match was successfully completed')
+        return redirect ('history_matches')
 
-
-    if request.method == 'POST':
-        creator=request.POST.get('creator')
-        oponent=request.POST.get('oponent')
-        if targeted_match.Creator == account:
-            Result.res_creator=f'{creator}-{oponent}'
-            print(Result)
-            Result.save()
-            return redirect('submit_result',targeted_match.id)
-        
-        else:
-            Result.res_joined=f'{creator}-{oponent}'
-            Result.save()
             
     context={
         'account':account,

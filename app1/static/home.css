@@ -13,6 +13,7 @@
     padding: 5px 15px;
     border-radius: 15px;
     background-color: rgb(235, 232, 49);
+    align-items: center;
 }
 
 table,th,td{
@@ -34,8 +35,8 @@ th,td{
 }
 
 .box_points img{
-    width: 25px;
-    height: 25px;
+    width: 22px;
+    height: 22px;
 }
 
 @media only screen and (min-width: 700px) {
