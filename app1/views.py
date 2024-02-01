@@ -6,7 +6,7 @@ from django.db.models import Q
 from django.http import HttpResponse, HttpResponseNotFound
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import login,logout
-from .models import Region,Courts,Account,Match,result
+from .models import Region,Courts,Account,Match,result,friend_requests
 from django.conf import settings
 import googlemaps
 
@@ -18,16 +18,16 @@ def index(request):
             user=form.get_user()
             login(request,user)
             return redirect('home')
-        
+
     elif user.is_authenticated:
         return redirect('home')
 
     else:
         form=AuthenticationForm()
-    
-    
-    
-    
+
+
+
+
     context={
         'form':form
     }
@@ -49,7 +49,7 @@ def register(request):
     context={
         'form':form
     }
-    
+
     return render(request,'register.html',context)
 
 def logout_user(request):
@@ -122,19 +122,44 @@ def Matching(request,pk):
 
 
 def profile(request,pk):
-    
     try:
         target_account=Account.objects.get(id=pk)
-        account=Account.objects.get(owner=target_account.owner)
+        account=Account.objects.get(owner=request.user)
 
     except ObjectDoesNotExist:
          return HttpResponseNotFound('''
             <style> body{text-align:center; background-color:#000; color:#fff;}</style><h1>User not Found</h1>''')
+
+    if 'send' in request.POST:
+        fr_request=friend_requests.objects.create(sender=account,receiver=target_account)
+        return redirect('profile',target_account.id)
+    
+    elif 'accept' in request.POST:
+        account.friends.add(target_account)
+        account.save()
+        fr_request=friend_requests.objects.get(sender=target_account,receiver=account).delete()
+        return redirect('profile',target_account.id)
+    
     
     context={
-        'target_account':account,
-        'account':Account.objects.get(owner=request.user)
+        'target_account':target_account,
+        'account':account,
     }
+    
+    requestes=friend_requests.objects.filter(((Q(sender=account))&(Q(receiver=target_account)))|(Q(sender=target_account))&(Q(receiver=account)))
+    is_friends=account.friends.filter(id=target_account.id).exists()
+    
+    if requestes.exists():
+        context['friend_request']=requestes[0]
+    
+    else:
+        context['friend_request']=None
+
+    if is_friends:
+        context['friends']=True
+    else:
+        context['friends']=False   
+    
     return render(request,'profile.html',context)
 
 
@@ -150,7 +175,7 @@ def edit_profile(request):
             return redirect('profile',account.id)
     else:
         form=Edit_Account(instance=account)
-    
+
     context={
         'account':account,
         'form':form
@@ -174,9 +199,9 @@ def match(request,pk):
         The_Match.Joined=None
         The_Match.save()
         return redirect('history_matches')
-    
-    
-    
+
+
+
     context={
         'match':The_Match,
         'account':account
@@ -191,18 +216,18 @@ def history_matches(request):
         'messages':message,
     }
     current=Match.objects.filter(Q(Active=True)&(Q(Creator=account)|Q(Joined=account)))
-    
-    
+
+
     if current.exists():
         context['current']=current[0]
-    
+
     else:
         context['current']=None
 
     match_completed=result.objects.filter((Q(target_match__Active=False)&(Q(target_match__Creator=account)|Q(target_match__Joined=account)))).order_by('-target_match__date_created')
     context['history_matches']=match_completed
 
-    
+
     return render(request,'history_matches.html',context)
 
 
@@ -248,7 +273,7 @@ def submit_result(request,pk):
 
     if not (account==targeted_match.Joined or account==targeted_match.Creator):
         return redirect('home')
-    
+
     if request.method == 'POST':
         creator=request.POST.get('creator')
         oponent=request.POST.get('oponent')
@@ -257,11 +282,11 @@ def submit_result(request,pk):
             print(Result)
             Result.save()
             return redirect('submit_result',targeted_match.id)
-        
+
         else:
             Result.res_joined=f'{creator}-{oponent}'
             Result.save()
-    
+
     if Result.res_joined!='NONE' and Result.res_creator!='NONE' and Result.submited == False:
         if not (Result.res_joined==Result.res_creator):
             messages.error(request,'The submits does not match')
@@ -290,35 +315,36 @@ def submit_result(request,pk):
                 targeted_match.Creator.points+=35
                 targeted_match.Creator.wins+=1
                 targeted_match.Joined.points-=35
-                
-            
+
+
             elif score_creator<score_joined:
                 Result.winner=targeted_match.Joined
                 Result.looser=targeted_match.Creator
                 targeted_match.Creator.points-=35
                 targeted_match.Joined.wins+=1
                 targeted_match.Joined.points+=35
-        
+
             else:
                 Result.winner=None
                 Result.looser=None
-            
+
             targeted_match.Creator.played_matches+=1
             targeted_match.Joined.played_matches+=1
             targeted_match.Creator.save()
             targeted_match.Joined.save()
+            targeted_match.save()
             Result.creator_score=score_creator
             Result.joined_score=score_joined
             Result.submited=True
             Result.save()
             messages.info(request,'The match was successfully completed')
             return redirect ('history_matches')
-    
+
     elif Result.submited == True:
         messages.info(request,'The match was successfully completed')
         return redirect ('history_matches')
 
-            
+
     context={
         'account':account,
         'match':targeted_match,
@@ -326,3 +352,10 @@ def submit_result(request,pk):
     }
     return render(request,'submit_result.html',context)
 
+
+def notifications(request):
+    account=Account.objects.get(owner=request.user)
+    context={
+        'account':account,
+    }
+    return render(request,'notifications.html',context)

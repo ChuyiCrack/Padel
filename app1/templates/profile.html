@@ -27,6 +27,28 @@
                 <h2>{{target_account.owner.username}}</h2>
                 {% if target_account.owner == request.user %}
                 <a href="{% url 'edit' %}">Edit</a>
+                {% else%}
+                    {% if not friends %}
+                        {% if friend_request %}
+                            {% if friend_request.sender == account %}
+                            <div class="sent">
+                                <p>Friend request sent</p>
+                            </div>
+                            {% else %}
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <button name="accept">Accept Friend Request</button>
+                                </form>
+                            {% endif %}
+                        {% else %}
+                        <form method="post">
+                            {% csrf_token %}
+                            <button name="send">Add to friends</button>
+                        </form>
+                        {% endif %}
+                    {% else %}
+                        <p style="margin: 0;">Friends</p>
+                    {% endif%}
                 {% endif %}
             </div>
         </div>

@@ -63,4 +63,16 @@ class result(models.Model):
 
     def __str__(self):
         return f'REsult of the match {self.target_match.id}'
+    
+class friend_requests(models.Model):
+    sender=models.ForeignKey(Account,on_delete=models.CASCADE,related_name='sender_request')
+    receiver=models.ForeignKey(Account,on_delete=models.CASCADE,related_name='receiver_request')
+    data=models.DateTimeField(default=timezone.now)
+    checked=models.BooleanField(default=False)
 
+    def __str__(self):
+        return f'From {self.sender} to {self.receiver}'
+
+class notification(models.Model):
+    type=models.CharField(max_length=20)
+    message=models.TextField(max_length=50)
