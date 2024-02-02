@@ -16,5 +16,6 @@ urlpatterns =[
    path('search_match/',views.search_match,name='search_match'),
    path('join_match/<int:pk>',views.join_match,name='join'),
    path('results/<int:pk>',views.submit_result,name='submit_result'),
-   path('notifications/',views.notifications,name='notifications')
+   path('notifications/',views.notifications,name='notifications'),
+   path('invite_party/',views.invite_party,name='party')
 ]

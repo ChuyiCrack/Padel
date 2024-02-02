@@ -31,6 +31,15 @@ class Account(models.Model):
     played_matches=models.PositiveIntegerField(default=0)
     wins=models.PositiveIntegerField(default=0)
     friends=models.ManyToManyField('self', symmetrical=True,blank=True)
+    last_activity=models.DateTimeField(default=timezone.now,blank=True)
+    party=models.ManyToManyField('self', symmetrical=True,blank=True)
+
+    def add_party(self,friend):
+        if ((self.party.count())<2):
+            self.party.add(friend)
+            self.save()
+        return 
+
 
     def calculate_winrate(self):
         if self.played_matches==0:
@@ -76,3 +85,6 @@ class friend_requests(models.Model):
 class notification(models.Model):
     type=models.CharField(max_length=20)
     message=models.TextField(max_length=50)
+
+class friend_notification(notification):
+    friend_to_add=models.ForeignKey(Account,on_delete=models.CASCADE,related_name='friend_request')

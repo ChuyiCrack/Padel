@@ -9,6 +9,15 @@ from django.contrib.auth import login,logout
 from .models import Region,Courts,Account,Match,result,friend_requests
 from django.conf import settings
 import googlemaps
+from django.utils import timezone
+
+def rewrite_activity(user):
+    account=Account.objects.get(owner=user.id)
+    account.last_activity=timezone.now()
+    account.save()
+    return account
+
+
 
 def index(request):
     user=request.user
@@ -57,14 +66,14 @@ def logout_user(request):
     return redirect('index')
 
 def home(request):
-    account=Account.objects.get(owner=request.user)
+    account=rewrite_activity(request.user)
     context={
         'account':account
     }
     return render(request,'home.html',context)
 
 def regions(request):
-    account=Account.objects.get(owner=request.user)
+    account=rewrite_activity(request.user)
     all_regions=Region.objects.all()
     context={
         'regions':all_regions,
@@ -73,7 +82,7 @@ def regions(request):
     return render(request,'regions.html',context)
 
 def courts(request,pk):
-    account=Account.objects.get(owner=request.user)
+    account=rewrite_activity(request.user)
     Region_Obtained=Region.objects.get(id=pk)
     region_courts=Courts.objects.filter(region=Region_Obtained)
     context={
@@ -84,7 +93,7 @@ def courts(request,pk):
     return render(request,'courts.html',context)
 
 def Matching(request,pk):
-    account=Account.objects.get(owner=request.user)
+    account=rewrite_activity(request.user)
     target_court=Courts.objects.get(id=pk)
     secret_key=settings.SECRET_KEY
     if request.method == 'POST':
@@ -124,7 +133,7 @@ def Matching(request,pk):
 def profile(request,pk):
     try:
         target_account=Account.objects.get(id=pk)
-        account=Account.objects.get(owner=request.user)
+        account=rewrite_activity(request.user)
 
     except ObjectDoesNotExist:
          return HttpResponseNotFound('''
@@ -164,8 +173,7 @@ def profile(request,pk):
 
 
 def edit_profile(request):
-    account=Account.objects.get(owner=request.user)
-    print(account.owner.username)
+    account=rewrite_activity(request.user)
     if request.method=='POST':
         form=Edit_Account(request.POST,request.FILES,instance=account)
         print('step1')
@@ -183,7 +191,7 @@ def edit_profile(request):
     return render(request,'edit_profile.html',context)
 
 def match(request,pk):
-    account=Account.objects.get(owner=request.user)
+    account=rewrite_activity(request.user)
     The_Match=Match.objects.get(id=pk)
 
     if 'delete' in request.POST:
@@ -209,7 +217,7 @@ def match(request,pk):
     return render(request,'match.html',context)
 
 def history_matches(request):
-    account=Account.objects.get(owner=request.user)
+    account=rewrite_activity(request.user)
     message=messages.get_messages(request)
     context={
         'account':account,
@@ -232,7 +240,7 @@ def history_matches(request):
 
 
 def search_match(request):
-    account=Account.objects.get(owner=request.user)
+    account=rewrite_activity(request.user)
     Matches=Match.objects.filter(Active=True,Joined__isnull=True)
     context={
         'account':account,
@@ -242,7 +250,7 @@ def search_match(request):
 
 
 def join_match(request,pk):
-    account=Account.objects.get(owner=request.user)
+    account=rewrite_activity(request.user)
     target_match=Match.objects.get(id=pk)
     lat=target_match.court.lat
     lng=target_match.court.lng
@@ -263,7 +271,7 @@ def join_match(request,pk):
     return render(request,'join_match.html',context)
 
 def submit_result(request,pk):
-    account=Account.objects.get(owner=request.user)
+    account=rewrite_activity(request.user)
     targeted_match=Match.objects.get(id=pk)
     try:
         Result=result.objects.get(target_match=targeted_match)
@@ -354,8 +362,18 @@ def submit_result(request,pk):
 
 
 def notifications(request):
-    account=Account.objects.get(owner=request.user)
+    account=rewrite_activity(request.user)
     context={
         'account':account,
     }
     return render(request,'notifications.html',context)
+
+def invite_party(request):
+    account=rewrite_activity(request.user)
+    friends=account.friends.order_by('-last_activity')
+    context={
+        'account':account,
+        'friends':friends,
+        'current_time':(timezone.now() - timezone.timedelta(seconds=900))
+    }
+    return render(request,'invite_party.html',context)

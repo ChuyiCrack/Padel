@@ -39,7 +39,70 @@ th,td{
     height: 22px;
 }
 
+.party{
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    width: fit-content;
+    margin-top: 20px;
+}
+
+.party_player{
+    margin-right: 20px;
+}
+
+.party_player img{
+    width: 70px;
+    border: 2px solid #000;
+}
+
+.party_player p{
+    margin: 0;
+}
+
+.invite_box{
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    margin-left: 20px;
+}
+
+.invite_box p{
+    margin: 10px 0;
+    font-size: 12px;
+    text-align: center;
+}
+.plus_container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 70px;
+    width: 70px;
+    background-color: #b8b8b8;
+    border: 2px solid #000;
+    margin: auto;
+}
+.plus_container .line_1{
+    background-color: #ffffff;
+    width: 15px;
+    height: 80%;
+}
+.plus_container .line_2{
+    position: absolute;
+    background-color: #ffffff;
+    height: 15px;
+    width: 56px;
+}
+
+#link_invite{
+    text-decoration: none;
+    color: #000;
+}
+
 @media only screen and (min-width: 700px) {
+    #player_1 img{
+        width: 100px;
+    }
     table{
         width: 60%;
     }

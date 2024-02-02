@@ -1,0 +1,58 @@
+.friend{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.friend img{
+    width: 40px;
+    height: 40px;
+}
+
+#username{
+    margin: 0;
+}
+
+.cirlce{
+    width: 10px;
+    height: 10px;
+    border-radius: 50px;
+
+}
+
+.disconected{
+    background-color: rgb(226, 75, 75);
+}
+
+.connected{
+    background-color: rgb(59, 230, 150);
+}
+
+.status .cirlce,.status p{
+    margin: 0;
+    font-size: 12px;
+    
+}
+
+.status .cirlce{
+    margin-top: 3px;
+    margin-right: 5px;
+    
+}
+
+.status{
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+}
+
+.name_status{
+    display: flex;
+    flex-direction: column;
+}
+
+.boxy_data{
+    margin: 0 10px;
+    display: flex;
+    flex-direction: column;
+}

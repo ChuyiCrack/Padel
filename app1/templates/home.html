@@ -34,7 +34,26 @@
                 <p>{{account.points}}</p>
             </div>
         </div>
+        <div class="party">
+            <div class="party_player">
+                <img src="{{account.profile_picture.url}}" alt="">
+                <p>{{account}}</p>
+            </div>
+            {% if account.party.all.count == 0 %}
+            <a id="link_invite" href="{% url 'party' %}">
+                <div class="invite_box">
+                    <div class="plus_container">
+                        <div class="line_1"></div>
+                        <div class="line_2"></div>
+                    </div>
+                    <p>Invite someone</p>
+                </div>
+            </a>
+        </div>
         
+
+
+        {% endif %}
     </div>
     
 </body>

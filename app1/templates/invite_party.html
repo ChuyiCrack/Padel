@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invite</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'friends.css' %}">
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <div class="friends_box">
+        {% if account.friends.all.count > 0 %}
+            
+            {% for friend in friends %}
+                <div class="friend">
+                    <img src="{{friend.profile_picture.url}}" alt="">
+                    
+                    <div class="name_status">
+                        <div class="boxy_data">
+                            <p id="username">{{friend}}</p>
+                            <div class="status">
+                                {% if not friend.last_activity|date:'U' > current_time|date:'U' %}
+                                    <div class="cirlce disconected"></div>
+                                    <p>Offline</p>
+                                {% else %}
+                                    <div class="cirlce connected"></div>
+                                    <p>Online</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <form method="post">
+                        {% csrf_token %}
+                        <button>Invite</button>
+                    </form>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</body>
+</html>
