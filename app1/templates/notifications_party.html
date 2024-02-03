@@ -22,10 +22,33 @@
         </a>
     </div>
     <div class="main_box">
-        {% if friend_request.all.count > 0 %}
-            {% for request in friend_request %}
-                <p>{{request}}</p>
-            {% endfor %}
+        {% if partys.all.count > 0 %}
+        {% for party in partys %}
+        <a href="{% url 'profile' party.sender.id %}" class="a_friend">
+            <div class="friend_box">
+                <div class="inf_friend">
+                    <img src="{{party.sender.profile_picture.url}}" alt="">
+                </div>
+                <div class="status_sender">
+                    <p id="username">{{party.sender}}</p>
+                    <div class="status">
+                        {% if not friend.last_activity|date:'U' > current_time|date:'U' %}
+                            <div class="cirlce disconected"></div>
+                            <p>Offline</p>
+                        {% else %}
+                            <div class="cirlce connected"></div>
+                            <p>Online</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <form class="join_form" method="post">
+                    {% csrf_token %}
+                    <button type="submit" name="join" value="{{party.sender.id}}">join</button>
+                    <p>{% if party.sender.party_group == None %}1{% else %}2{% endif %}/2</p>
+                </form>
+            </div>
+        </a>
+    {% endfor %}
         {% else %}
             <p>you dont have any notification now</p>
         {% endif %}

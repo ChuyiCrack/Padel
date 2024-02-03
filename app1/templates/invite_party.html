@@ -11,7 +11,6 @@
     {% include 'navbar.html' %}
     <div class="friends_box">
         {% if account.friends.all.count > 0 %}
-            
             {% for friend in friends %}
                 <div class="friend">
                     <img src="{{friend.profile_picture.url}}" alt="">
@@ -30,10 +29,16 @@
                             </div>
                         </div>
                     </div>
-                    <form method="post">
-                        {% csrf_token %}
-                        <button>Invite</button>
-                    </form>
+                    {% if party == None or party.date|date:'U' < 2min|date:'U' %}
+                        <form method="post">
+                            {% csrf_token %}
+                            <button value="{{friend.id}}" name="invitation">Invite</button>
+                        </form>
+                    {% else %}
+                        <div class="coldown">
+                            <p>Invited</p>
+                        </div>
+                    {% endif %}
                 </div>
             {% endfor %}
         {% endif %}

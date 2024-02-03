@@ -26,10 +26,6 @@ body{
 }
 
 
-.main_box{
-    background-color: red;
-}
-
 #friendy{
     width: 50%;
     border-right: 1px solid #000;
@@ -46,7 +42,6 @@ body{
 }
 .friend_box{
     display: flex;
-    background-color: #0f0;
     width: 70%;
     align-items: center;
     margin: auto;
@@ -71,6 +66,51 @@ button{
     padding: 5px 10px;
 }
 
+.status_sender{
+    display: flex;
+    flex-direction: column;
+}
+
+.cirlce{
+    width: 15px;
+    height: 15px;
+    border-radius: 50px;
+
+}
+
+.status{
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+}
+
+.disconected{
+    background-color: rgb(226, 75, 75);
+}
+
+.connected{
+    background-color: rgb(59, 230, 150);
+}
+
+.status .cirlce,.status p{
+    margin: 0;
+    font-size: 15px;
+    
+}
+
+.status .cirlce{
+    margin-top: 4px;
+    margin-right: 5px;
+    
+}
+
+.join_form p{
+    margin: 0;
+    font-size: 12px;
+    font-weight: 700;
+    position: absolute;
+    margin-left: 15px;
+}
 @media only screen and (min-width: 700px) {
     #username{
      font-size: 20px;

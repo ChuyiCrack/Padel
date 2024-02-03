@@ -33,13 +33,7 @@ class Account(models.Model):
     friends=models.ManyToManyField('self', symmetrical=True,blank=True)
     last_activity=models.DateTimeField(default=timezone.now,blank=True)
     party=models.ManyToManyField('self', symmetrical=True,blank=True)
-
-    def add_party(self,friend):
-        if ((self.party.count())<2):
-            self.party.add(friend)
-            self.save()
-        return 
-
+    party_group=models.ForeignKey('Party',on_delete=models.CASCADE,null=True, blank=True, default=None)
 
     def calculate_winrate(self):
         if self.played_matches==0:
@@ -48,6 +42,12 @@ class Account(models.Model):
     
     def __str__(self):
         return self.owner.username
+    
+class Party(models.Model):
+    Creator=models.ForeignKey(Account,on_delete=models.SET_NULL,null=True,related_name='creator_party')
+    Joined=models.ForeignKey(Account,blank=True,on_delete=models.SET_NULL,null=True,related_name='joined_party')
+    date=models.DateTimeField(default=timezone.now)
+    Active_Group=models.BooleanField(default=True)
     
 class Match(models.Model):
     Creator=models.ForeignKey(Account,on_delete=models.SET_NULL,null=True,related_name='creator_match')
@@ -77,15 +77,16 @@ class result(models.Model):
 class friend_requests(models.Model):
     sender=models.ForeignKey(Account,on_delete=models.CASCADE,related_name='sender_request')
     receiver=models.ForeignKey(Account,on_delete=models.CASCADE,related_name='receiver_request')
-    data=models.DateTimeField(default=timezone.now)
+    date=models.DateTimeField(default=timezone.now)
     checked=models.BooleanField(default=False)
 
     def __str__(self):
         return f'From {self.sender} to {self.receiver}'
 
-class notification(models.Model):
-    type=models.CharField(max_length=20)
-    message=models.TextField(max_length=50)
+class party_invite(models.Model):
+    sender=models.ForeignKey(Account,on_delete=models.CASCADE,related_name='sender_party')
+    receiver=models.ForeignKey(Account,on_delete=models.CASCADE,related_name='receiver_party')
+    date=models.DateTimeField(default=timezone.now)
 
-class friend_notification(notification):
-    friend_to_add=models.ForeignKey(friend_requests,on_delete=models.CASCADE,related_name='friend_request')
+    def __str__(self):
+        return f'From {self.sender} to {self.receiver} {self.id}'

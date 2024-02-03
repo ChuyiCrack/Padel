@@ -5,24 +5,26 @@
     margin: 10px 0;
     border: 2px solid #000;
     border-radius: 5px;
+    justify-content: space-between;
 }
 
 .friends_box{
     margin: auto;
-    width: fit-content;
+    width: 80%;
 }
 .friend img{
-    width: 40px;
-    height: 40px;
+    width: 70px;
+    height: 70px;
 }
 
 #username{
     margin: 0;
+    font-size: 16px;
 }
 
 .cirlce{
-    width: 10px;
-    height: 10px;
+    width: 15px;
+    height: 15px;
     border-radius: 50px;
 
 }
@@ -37,14 +39,19 @@
 
 .status .cirlce,.status p{
     margin: 0;
-    font-size: 12px;
+    font-size: 15px;
     
 }
 
 .status .cirlce{
-    margin-top: 3px;
+    margin-top: 4px;
     margin-right: 5px;
     
+}
+
+form button{
+    margin-right: 10px;
+    padding: 5px 10px;
 }
 
 .status{
@@ -62,4 +69,18 @@
     margin: 0 10px;
     display: flex;
     flex-direction: column;
+}
+
+.coldown p{
+    margin: 0;
+    font-size: 12px;
+    padding: 5px 10px;
+    color: #fff;
+}
+
+.coldown{
+    border: 1px solid #000;
+    margin-right: 10px;
+    border-radius: 5px;
+    background-color: #9e9e9ee1;
 }

@@ -6,7 +6,7 @@ from django.db.models import Q
 from django.http import HttpResponse, HttpResponseNotFound
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import login,logout
-from .models import Region,Courts,Account,Match,result,friend_requests
+from .models import Region,Courts,Account,Match,result,friend_requests,party_invite,Party
 from django.conf import settings
 import googlemaps
 from django.utils import timezone
@@ -388,17 +388,59 @@ def notifications_friends(request):
 
 def notifications_party(request):
     account=rewrite_activity(request.user)
+    all_invitation_party=party_invite.objects.filter(receiver=account)
+
+    if 'join' in request.POST:
+        id_party_sender= request.POST.get('join', None)
+        sender_account=Account.objects.get(id=id_party_sender)
+        if sender_account.friends.count() >=2:
+            party_notification=party_invite.objects.get(receiver=account,sender=sender_account).delete()
+            return redirect('notifications_party')
+        
+        new_party=Party.objects.create(Creator=sender_account,Joined=account)
+        account.party_group=new_party
+        sender_account.party_group=new_party
+        account.save()
+        sender_account.save()
+        party_notification=party_invite.objects.get(receiver=account,sender=sender_account).delete()
+        return redirect('home')
     context={
         'account':account,
+        'partys':all_invitation_party,
+        'current_time':(timezone.now() - timezone.timedelta(seconds=900)),
     }
     return render(request,'notifications_party.html',context)
 
 def invite_party(request):
     account=rewrite_activity(request.user)
     friends=account.friends.order_by('-last_activity')
+    if account.party_group != None:
+        return redirect('home')
+    
+    if 'invitation' in request.POST:
+        all_party_invitations=party_invite.objects.filter(sender=account)
+        id_party_receiver= request.POST.get('invitation', None)
+        receiver_party=Account.objects.get(id=id_party_receiver)
+        if all_party_invitations.exists():
+            invitation_to_delete=all_party_invitations.first()
+            invitation_to_delete.delete()
+
+        party_invitation=party_invite.objects.create(sender=account,receiver=receiver_party)
+        return redirect('party')
+    
     context={
         'account':account,
         'friends':friends,
-        'current_time':(timezone.now() - timezone.timedelta(seconds=900))
+        'current_time':(timezone.now() - timezone.timedelta(seconds=900)),
+        '2min':(timezone.now() - timezone.timedelta(seconds=120))
     }
+
+    party_invitation=party_invite.objects.filter(sender=account)
+    if party_invitation.exists:
+        context['party']=party_invitation.first()
+    
+    else:
+        context['party']=None
+
+    
     return render(request,'invite_party.html',context)

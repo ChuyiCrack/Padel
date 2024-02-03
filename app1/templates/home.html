@@ -39,7 +39,7 @@
                 <img src="{{account.profile_picture.url}}" alt="">
                 <p>{{account}}</p>
             </div>
-            {% if account.party.all.count == 0 %}
+            {% if account.party_group == None %}
             <a id="link_invite" href="{% url 'party' %}">
                 <div class="invite_box">
                     <div class="plus_container">
@@ -49,11 +49,22 @@
                     <p>Invite someone</p>
                 </div>
             </a>
+            {% else %}
+            <div class="party_player friend">
+                {% if account.party_group.Creator == account %}
+                <img src="{{account.party_group.Joined.profile_picture.url}}" alt="">
+                <p>{{account.party_group.Joined}}</p>
+                {% else %}
+                <img src="{{account.party_group.Creator.profile_picture.url}}" alt="">
+                <p>{{account.party_group.Creator}}</p>
+                {% endif %}
+            </div>
+            {% endif %}
         </div>
         
 
 
-        {% endif %}
+        
     </div>
     
 </body>
