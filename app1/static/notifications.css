@@ -1,0 +1,81 @@
+body{
+    text-align: center;
+}
+
+.choose{
+    display: flex;
+    flex-direction: row;
+}
+
+.active{
+    background-color: #b1b1b1d8;
+}
+
+#party{
+    width: 50%;
+    border-left: 1px solid #000;
+    border-bottom: 2px solid #000;
+    text-decoration: none;
+    color: #000;
+    
+}
+
+.a_friend{
+    text-decoration: #000;
+    color: #000;
+}
+
+
+.main_box{
+    background-color: red;
+}
+
+#friendy{
+    width: 50%;
+    border-right: 1px solid #000;
+    border-bottom: 2px solid #000;
+    text-decoration: none;
+    color: #000;
+}
+
+.inf_friend img{
+    width: 70px;
+    height: 70px;
+    border-top-left-radius:8px;
+    border-bottom-left-radius: 8px;
+}
+.friend_box{
+    display: flex;
+    background-color: #0f0;
+    width: 70%;
+    align-items: center;
+    margin: auto;
+    border: 2px solid #000;
+    margin-top: 20px;
+    border-radius: 10px;
+    justify-content: space-between;
+}
+.inf_friend{
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+    align-items: center;
+}
+
+#username{
+    margin: 0 20px;
+    font-size: 16px;
+}
+
+button{
+    padding: 5px 10px;
+}
+
+@media only screen and (min-width: 700px) {
+    #username{
+     font-size: 20px;
+    }
+    .friend_box{
+        width: 500px;
+    }
+ }

@@ -48,12 +48,19 @@
                 src="https://maps.googleapis.com/maps/api/js?key={{key}}&callback=initMap">
             </script>
             <p><b>Direction:</b> {{court.Location}}</p>
-            <form method="post">
-                {% csrf_token %}
-                <button>Create Match</button>
-            </form>
+            {% if account.party.all.count >= 1 %}
+                <form method="post">
+                    {% csrf_token %}
+                    <div>
+                        <b><label  for="checkbox">Ranked</label></b>
+                        <input name="checkbox" id="checkbox" type="checkbox">
+                    </div>
+                    <button>Create Match</button>
+                </form>
+            {% else %}
+                <b><p>You need a friend in you party to create a match</p></b>
+            {% endif %}
         </div>
-        
     </div>
 </body>
 </html>

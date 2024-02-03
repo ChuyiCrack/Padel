@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'notifications.css' %}">
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <div class="choose">
+        <a id="friendy" href="{% url 'notifications_friends' %}">
+            <div>
+                <p>Friend Request</p>
+            </div>
+        </a>
+        <a id="party" class="active" href="{% url 'notifications_party' %}">
+            <div>
+                <p>Party Invites</p>
+            </div>
+        </a>
+    </div>
+    <div class="main_box">
+        {% if friend_request.all.count > 0 %}
+            {% for request in friend_request %}
+                <p>{{request}}</p>
+            {% endfor %}
+        {% else %}
+            <p>you dont have any notification now</p>
+        {% endif %}
+    </div>
+</body>
+</html>

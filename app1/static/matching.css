@@ -83,8 +83,13 @@ button{
     border-bottom-left-radius: 8px;
 }
 
-.player p{
+.friend_box p{
     margin: 0;
+    font-size: 20px;
+}
+
+form{
+    display: flex;
 }
 
 @media only screen and (min-width: 600px) {

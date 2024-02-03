@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'notifications.css' %}">
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <div class="choose">
+        <a id="friendy" class="active" href="{% url 'notifications_friends' %}">
+            <div>
+                <p>Friend Request</p>
+            </div>
+        </a>
+        <a id="party" href="{% url 'notifications_party' %}">
+            <div>
+                <p>Party Invites</p>
+            </div>
+        </a>
+    </div>
+    <div class="main_box">
+        {% if friend_request.all.count > 0 %}
+            {% for friend in friend_request %}
+                <a href="{% url 'profile' friend.sender.id %}" class="a_friend">
+                    <div class="friend_box">
+                        <div class="inf_friend">
+                            <img src="{{friend.sender.profile_picture.url}}" alt="">
+                            
+                        </div>
+                        <p id="username">{{friend.sender}}</p>
+                        <form method="post">
+                            {% csrf_token %}
+                            <button type="submit" name="added" value="{{friend.id}}">Add</button>
+                        </form>
+                    </div>
+                </a>
+            {% endfor %}
+            
+        {% else %}
+            <p>you dont have any friend requests now</p>
+        {% endif %}
+    </div>
+</body>
+</html>

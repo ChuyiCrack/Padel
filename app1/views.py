@@ -97,7 +97,12 @@ def Matching(request,pk):
     target_court=Courts.objects.get(id=pk)
     secret_key=settings.SECRET_KEY
     if request.method == 'POST':
-        new_match=Match.objects.create(Creator=account,court=target_court)
+        if 'checkbox' in request.POST:
+            checkbox_value=True
+
+        else:
+            checkbox_value=False
+        new_match=Match.objects.create(Creator=account,court=target_court,ranked=checkbox_value)
         return redirect('match',new_match.id)
 
 
@@ -361,12 +366,32 @@ def submit_result(request,pk):
     return render(request,'submit_result.html',context)
 
 
-def notifications(request):
+def notifications_friends(request):
     account=rewrite_activity(request.user)
     context={
         'account':account,
     }
-    return render(request,'notifications.html',context)
+    all_friend_request=friend_requests.objects.filter(receiver=account)
+    if not all_friend_request.exists() and False:
+        return redirect('notifications_party')
+    
+    if request.method == 'POST':
+        id_friend_request= request.POST.get('added', None)
+        fr_request=friend_requests.objects.get(id=id_friend_request)
+        fr_request.sender.friends.add(fr_request.receiver)
+        fr_request.sender.save()
+        fr_request.delete()
+        return redirect('notifications_party')
+    
+    context['friend_request']=all_friend_request
+    return render(request,'notifications_friends.html',context)
+
+def notifications_party(request):
+    account=rewrite_activity(request.user)
+    context={
+        'account':account,
+    }
+    return render(request,'notifications_party.html',context)
 
 def invite_party(request):
     account=rewrite_activity(request.user)

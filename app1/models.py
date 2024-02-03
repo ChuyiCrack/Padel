@@ -56,6 +56,7 @@ class Match(models.Model):
     Joined=models.ForeignKey(Account,blank=True,on_delete=models.SET_NULL,null=True,related_name='oponent_match')
     court=models.ForeignKey(Courts,blank=False,on_delete=models.SET_NULL,null=True,related_name='court_match')
     date_created=models.DateTimeField(default=timezone.now)
+    ranked=models.BooleanField()
 
     def __str__(self):
         return f'{self.Creator.owner.username} -- {self.id}'
@@ -87,4 +88,4 @@ class notification(models.Model):
     message=models.TextField(max_length=50)
 
 class friend_notification(notification):
-    friend_to_add=models.ForeignKey(Account,on_delete=models.CASCADE,related_name='friend_request')
+    friend_to_add=models.ForeignKey(friend_requests,on_delete=models.CASCADE,related_name='friend_request')
