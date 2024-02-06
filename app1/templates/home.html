@@ -54,6 +54,10 @@
                 {% if account.party_group.Creator == account %}
                 <img src="{{account.party_group.Joined.profile_picture.url}}" alt="">
                 <p>{{account.party_group.Joined}}</p>
+                <form method="post">
+                    {% csrf_token %}
+                    <button name="kick" value="{{account.party_group.id}}">Kick</button>
+                </form>
                 {% else %}
                 <img src="{{account.party_group.Creator.profile_picture.url}}" alt="">
                 <p>{{account.party_group.Creator}}</p>
@@ -61,6 +65,8 @@
             </div>
             {% endif %}
         </div>
+
+        <p>TESTI</p>
         
 
 

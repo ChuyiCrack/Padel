@@ -17,6 +17,10 @@ def rewrite_activity(user):
     account.save()
     return account
 
+def calculate_notifications(account:Account):
+    party_notifications=party_invite.objects.filter(receiver=account)
+    friend_notifications=friend_requests.objects.filter(receiver=account)
+    return (friend_notifications.count() + party_notifications.count())
 
 
 def index(request):
@@ -67,8 +71,13 @@ def logout_user(request):
 
 def home(request):
     account=rewrite_activity(request.user)
+    if 'kick' in request.POST:
+        party_to_delete=Party.objects.get(id=request.POST.get('kick', None))
+        party_to_delete.delete()
+        return redirect('home')
     context={
-        'account':account
+        'account':account,
+        'notifications':calculate_notifications(account)
     }
     return render(request,'home.html',context)
 
@@ -77,7 +86,8 @@ def regions(request):
     all_regions=Region.objects.all()
     context={
         'regions':all_regions,
-        'account':account
+        'account':account,
+        'notifications':calculate_notifications(account)
     }
     return render(request,'regions.html',context)
 
@@ -88,7 +98,8 @@ def courts(request,pk):
     context={
         'region':Region_Obtained,
         'courts':region_courts,
-        'account':account
+        'account':account,
+        'notifications':calculate_notifications(account)
     }
     return render(request,'courts.html',context)
 
@@ -130,7 +141,8 @@ def Matching(request,pk):
         'lng':lng,
         'place_id':place_id,
         'key':secret_key,
-        'account':account
+        'account':account,
+        'notifications':calculate_notifications(account)
     }
     return render(request,'matching.html',context)
 
@@ -158,6 +170,7 @@ def profile(request,pk):
     context={
         'target_account':target_account,
         'account':account,
+        'notifications':calculate_notifications(account),
     }
     
     requestes=friend_requests.objects.filter(((Q(sender=account))&(Q(receiver=target_account)))|(Q(sender=target_account))&(Q(receiver=account)))
@@ -191,7 +204,8 @@ def edit_profile(request):
 
     context={
         'account':account,
-        'form':form
+        'form':form,
+        'notifications':calculate_notifications(account)
     }
     return render(request,'edit_profile.html',context)
 
@@ -217,7 +231,8 @@ def match(request,pk):
 
     context={
         'match':The_Match,
-        'account':account
+        'account':account,
+        'notifications':calculate_notifications(account)
     }
     return render(request,'match.html',context)
 
@@ -227,6 +242,7 @@ def history_matches(request):
     context={
         'account':account,
         'messages':message,
+        'notifications':calculate_notifications(account)
     }
     current=Match.objects.filter(Q(Active=True)&(Q(Creator=account)|Q(Joined=account)))
 
@@ -249,7 +265,8 @@ def search_match(request):
     Matches=Match.objects.filter(Active=True,Joined__isnull=True)
     context={
         'account':account,
-        'matches':Matches
+        'matches':Matches,
+        'notifications':calculate_notifications(account)
     }
     return render(request,'search_match.html',context)
 
@@ -271,7 +288,8 @@ def join_match(request,pk):
         'match':target_match,
         'lat':lat,
         'lng':lng,
-        'key':settings.SECRET_KEY
+        'key':settings.SECRET_KEY,
+        'notifications':calculate_notifications(account)
     }
     return render(request,'join_match.html',context)
 
@@ -361,7 +379,8 @@ def submit_result(request,pk):
     context={
         'account':account,
         'match':targeted_match,
-        'result':Result
+        'result':Result,
+        'notifications':calculate_notifications(account)
     }
     return render(request,'submit_result.html',context)
 
@@ -370,10 +389,12 @@ def notifications_friends(request):
     account=rewrite_activity(request.user)
     context={
         'account':account,
+        'notifications':calculate_notifications(account)
     }
     all_friend_request=friend_requests.objects.filter(receiver=account)
-    if not all_friend_request.exists() and False:
+    if calculate_notifications(account) >= 1 and not all_friend_request.exists():
         return redirect('notifications_party')
+
     
     if request.method == 'POST':
         id_friend_request= request.POST.get('added', None)
@@ -381,7 +402,7 @@ def notifications_friends(request):
         fr_request.sender.friends.add(fr_request.receiver)
         fr_request.sender.save()
         fr_request.delete()
-        return redirect('notifications_party')
+        return redirect('notifications_friends')
     
     context['friend_request']=all_friend_request
     return render(request,'notifications_friends.html',context)
@@ -408,6 +429,7 @@ def notifications_party(request):
         'account':account,
         'partys':all_invitation_party,
         'current_time':(timezone.now() - timezone.timedelta(seconds=900)),
+        'notifications':calculate_notifications(account)
     }
     return render(request,'notifications_party.html',context)
 
@@ -432,7 +454,8 @@ def invite_party(request):
         'account':account,
         'friends':friends,
         'current_time':(timezone.now() - timezone.timedelta(seconds=900)),
-        '2min':(timezone.now() - timezone.timedelta(seconds=120))
+        '2min':(timezone.now() - timezone.timedelta(seconds=120)),
+        'notifications':calculate_notifications(account)
     }
 
     party_invitation=party_invite.objects.filter(sender=account)

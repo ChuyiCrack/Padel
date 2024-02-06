@@ -162,3 +162,24 @@ nav{
 .notifications{
     display: flex;
 }
+
+#notification_count{
+    position: absolute;
+    width: 15px;
+    height: 15px;
+
+
+}
+
+#notification_count p{
+    margin: 0;
+    font-size: 15px;
+    text-align: center;
+    margin-right: 10px;
+    color: #60dd41;
+
+}
+
+.no_noti{
+    opacity: 0.5;
+}

@@ -52,7 +52,12 @@
 
         <div class="profile_section">
             <a class="notifications" href="{% url 'notifications_friends' %}">
-                <img src="../../media/all_stuff/notification_bell.png" alt="">
+                <img {% if notifications == 0 %} class="no_noti" {% endif %} src="../../media/all_stuff/notification_bell.png" alt="">
+                {% if notifications != 0 %}
+                    <div id="notification_count">
+                        <p>{{notifications}}</p>
+                    </div>
+                {% endif %}
             </a>
             <a class="profile_a" href="{% url 'profile' account.id %}">
                 <div class="profile">

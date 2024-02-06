@@ -32,7 +32,7 @@
                 <div class="status_sender">
                     <p id="username">{{party.sender}}</p>
                     <div class="status">
-                        {% if not friend.last_activity|date:'U' > current_time|date:'U' %}
+                        {% if not party.sender.last_activity|date:'U' > current_time|date:'U' %}
                             <div class="cirlce disconected"></div>
                             <p>Offline</p>
                         {% else %}

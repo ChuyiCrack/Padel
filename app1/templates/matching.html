@@ -48,7 +48,7 @@
                 src="https://maps.googleapis.com/maps/api/js?key={{key}}&callback=initMap">
             </script>
             <p><b>Direction:</b> {{court.Location}}</p>
-            {% if account.party.all.count >= 1 %}
+            {% if not account.party_group == None and account == account.party_group.Creator %}
                 <form method="post">
                     {% csrf_token %}
                     <div>
