@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.contrib import messages
-from .forms import CustomUserCreationForm,Edit_Account
+from .forms import CustomUserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseNotFound
@@ -9,6 +9,7 @@ from django.contrib.auth import login,logout
 from .models import Region,Courts,Account,Match,result,friend_requests,party_invite,Party
 from django.conf import settings
 import googlemaps
+from PIL import Image
 from django.utils import timezone
 
 def rewrite_activity(user):
@@ -22,6 +23,13 @@ def calculate_notifications(account:Account):
     friend_notifications=friend_requests.objects.filter(receiver=account)
     return (friend_notifications.count() + party_notifications.count())
 
+def get_resolution(image):
+    try:
+        with Image.open(image) as img:
+            width, height = img.size
+            return width, height
+    except FileNotFoundError:
+        return None
 
 def index(request):
     user=request.user
@@ -190,24 +198,60 @@ def profile(request,pk):
     return render(request,'profile.html',context)
 
 
-def edit_profile(request):
+def edit_profile_picture(request):
     account=rewrite_activity(request.user)
-    if request.method=='POST':
-        form=Edit_Account(request.POST,request.FILES,instance=account)
-        print('step1')
-        if form.is_valid():
-            print('final step')
-            form.save()
-            return redirect('profile',account.id)
-    else:
-        form=Edit_Account(instance=account)
+    if request.method == 'POST':
+        my_uploaded_file = request.FILES.get('profile_picture')
+        resolution = get_resolution(my_uploaded_file)
+        if resolution:
+            width,height=resolution
+            ratio=round((width/height),2)
+            print(ratio)
+            if ratio >= 0.85 and ratio<=1.2:
+                account.profile_picture=my_uploaded_file
+                account.save()
+                return redirect('profile',account.id)
+            
+            else:
+                messages.error(request,'you need to upload images with ratio 1:1')
+            
 
+        else:
+            messages.error(request,'Something went wrong')
+
+        return redirect('profile_picture')
+        
+    
     context={
-        'account':account,
-        'form':form,
-        'notifications':calculate_notifications(account)
+       'account':account, 
     }
-    return render(request,'edit_profile.html',context)
+    return render(request,'change_profilepicture.html',context)
+
+def edit_background(request):
+    account=rewrite_activity(request.user)
+    if request.method == 'POST':
+        my_uploaded_file = request.FILES.get('profile_picture')
+        resolution = get_resolution(my_uploaded_file)
+        if resolution:
+            width,height=resolution
+            ratio=round((width/height),2)
+            if ratio >= 1.5 and ratio<=1.8:
+                account.homepage_picture=my_uploaded_file
+                account.save()
+                return redirect('profile',account.id)
+            
+            else:
+                messages.error(request,'Try to upload an image with those ratios (3:2,4:3,16:9)')
+            
+
+        else:
+            messages.error(request,'Something went wrong')
+
+        return redirect('profile_picture')
+    context={
+       'account':account, 
+    }
+    return render(request,'edit_cover.html',context)
 
 def match(request,pk):
     account=rewrite_activity(request.user)

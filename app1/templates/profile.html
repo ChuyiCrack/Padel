@@ -16,18 +16,28 @@
     <div class="principal_box">
         <div class="boxy">
             <div class="img_container">
+                <a class="background_a" href="{% url 'background' %}">
+                    <img src="../../media/all_stuff/edit.png" alt="">
+                </a>
                 {% if account.homepage_picture %}
-                    <img src="{{account.homepage_picture.url}}" alt="">
+                    <img class="cover" src="{{account.homepage_picture.url}}" alt="">
                 {% else %}
-                    <img src="../../media/profile_picture/default_homepage2.jpg" alt="">
+                    <img class="cover" src="../../media/profile_picture/default_homepage2.jpg" alt="">
                 {% endif %}
             </div>
             <div class="profile_picture">
-                <img src="{{target_account.profile_picture.url}}" alt="">
-                <h2>{{target_account.owner.username}}</h2>
+                <a id="a_edit" href="{% url 'profile_picture' %}">
+                    <img src="../../media/all_stuff/edit.png" alt="">
+                </a>
+                <img id="profile_picture" src="{{target_account.profile_picture.url}}" alt="">
+                
                 {% if target_account.owner == request.user %}
-                <a href="{% url 'edit' %}">Edit</a>
+                <div class="edit_box">
+                    <h2>{{target_account.owner.username}}</h2>
+                </div>
+                
                 {% else%}
+                    <h2>{{target_account.owner.username}}</h2>
                     {% if not friends %}
                         {% if friend_request %}
                             {% if friend_request.sender == account %}

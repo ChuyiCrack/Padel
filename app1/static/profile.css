@@ -11,6 +11,37 @@
     background-color: red;
 }
 
+.edit_box{
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+    margin: auto;
+    align-items: center;
+}
+
+
+#a_edit img{
+    margin: 0;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 10px;
+    margin-left: 40px;
+    
+}
+
+
+.background_a img{
+    background-color: rgba(215, 212, 212, 0.319);
+    width: fit-content;
+}
+
+.background_a{
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    right: -99;
+}
 .img_container img{
     width: 100%;
     height: 100%;
@@ -27,16 +58,12 @@
 .profile_picture h2{
     margin: 0;
     text-align: center;
-    margin-bottom: 10px;
+    font-size: 45px;
     
 }
 
-.profile_picture a{
-    width: fit-content;
-    margin: auto;
-}
 
-.profile_picture img{
+.profile_picture #profile_picture{
     width: 150px;
     height: 150px;
     border: 3px solid #303030;
@@ -93,7 +120,7 @@
     .boxy{
         text-align: center;
     }
-    .img_container img{
+    .img_container .cover{
         width: 70%;
         height: 400px;
         object-fit: cover;

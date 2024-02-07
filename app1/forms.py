@@ -17,9 +17,4 @@ class RegionForm(forms.ModelChoiceField):
         model=Region
         fields=('Name')
 
-class Edit_Account(forms.ModelForm):
-    class Meta:
-        model = Account
-        fields = ['profile_picture', 'homepage_picture'] 
-
     

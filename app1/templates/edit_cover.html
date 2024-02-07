@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Background</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'edit.css' %}">
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <h1>Change HomePage Image</h1>
+    {% if messages %}
+        {% for message in messages %}
+            <h2 class="alert">{{message}}</h2>
+        {% endfor %}
+    {% endif %}
+    <form class="form_profile" enctype="multipart/form-data" method="post">
+        {% csrf_token %}
+        <input accept="image/png image/jpeg image/gif" name="profile_picture" type="file">
+        <div class="submit_box">
+            <button type="submit">submit</button>
+        </div>
+    </form>
+</body>
+</html>

@@ -7,22 +7,41 @@ h1{
     justify-content: center;
 }
 
-label{
-    font-weight: 900;
-    font-size: 20px;
+.form_profile{
+    width: fit-content;
+    margin: auto;
+    padding: 0;
+    border: 3px solid #000;
 }
-form input[type="text"],
-form input[type="file"],
-form select {
-    display: inline;
-    margin-bottom: auto;
-    padding: 8px;
-}
-.button_div{
+.form_profile input[type="file"]{
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    border-bottom: 2px solid #000;
+    padding: 5px 10px;
+    width: fit-content;
 }
 
+
+
+.submit_box{
+    margin: auto;
+}
+.form_profile button{
+    width: 100%;
+    padding: 10px 0;
+    background-color: #cececedc;
+}
+
+.alert{
+    color: rgb(238, 60, 60);
+    margin: 0;
+    margin: auto;
+    width: fit-content;
+}
+
+.form_profile button:hover{
+    background-color: #aeaeae;
+}
 .button_submit{
     margin: 10px;
     padding: 5px 5px;
