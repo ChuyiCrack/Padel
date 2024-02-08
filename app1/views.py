@@ -511,3 +511,22 @@ def invite_party(request):
 
     
     return render(request,'invite_party.html',context)
+
+
+def search_friends(request):
+    account=rewrite_activity(request.user)
+    context={
+        'account':account,
+        'notifications':calculate_notifications(account),
+    }
+    if 'submit_search' in request.POST:
+        searched=request.POST.get('search', None)
+        Selected_Users=Account.objects.filter(owner__username__icontains=searched)
+        context['filtered']=Selected_Users
+        return render(request,'search_friends.html',context)
+
+    context={
+        'account':account,
+        'notifications':calculate_notifications(account),
+    }
+    return render(request,'search_friends.html',context)

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEarching Friends</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'search.css' %}">
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <form class="form_friend" method="post">
+        {% csrf_token %}
+        <input type="search" name="search" placeholder="Search some Users">
+        <button type="submit" name="submit_search">Search</button>
+    </form>
+    <div>
+        {% if filtered %}
+            {% for account in filtered %}
+                <a class="a_account" href="{% url 'profile' account.id %}">
+                    <div class="friend_box">
+                        <div class="inf_friend">
+                            <img src="{{account.profile_picture.url}}" alt="">
+                            
+                        </div>
+                        <p id="username">{{account}}</p>
+                    </div>
+                </a>
+            {% endfor %}
+        {% else %}
+            <div class="no_search">
+                <h2>Try to Search Some Users</h2>
+                <img src="../../media/all_stuff/padel.gif" alt="">
+            </div>
+        {% endif %}
+    </div>
+    
+</body>
+</html>

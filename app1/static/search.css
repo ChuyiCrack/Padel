@@ -60,3 +60,67 @@ h1{
     margin: auto;
     width: 100px;
 }
+
+.form_friend{
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+}
+
+.form_friend input{
+    padding: 10px 0;
+}
+
+.form_friend button{
+    padding: 0 10px;
+    margin-left: 10px;
+}
+
+
+.no_search img{
+    width: 200px;
+}
+
+.no_search {
+    text-align: center;
+}
+
+.no_search h2{
+    margin: 15px 0 0 0;
+}
+
+.inf_friend img{
+    width: 70px;
+    height: 70px;
+    border-top-left-radius:8px;
+    border-bottom-left-radius: 8px;
+}
+.friend_box{
+    display: flex;
+    width: 70%;
+    align-items: center;
+    margin: auto;
+    border: 2px solid #000;
+    margin-top: 20px;
+    border-radius: 10px;
+    justify-content: space-between;
+}
+.inf_friend{
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+    align-items: center;
+}
+
+#username{
+    margin: 0 0;
+    font-size: 16px;
+    overflow-x: hidden;
+    width: 100%;
+    text-align: center;
+}
+
+.a_account{
+    text-decoration: None;
+    color: #000;
+}
