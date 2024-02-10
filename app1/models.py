@@ -47,10 +47,21 @@ class Match(models.Model):
     Creator=models.ForeignKey(Account,on_delete=models.SET_NULL,null=True,related_name='creator_match')
     Active=models.BooleanField(default=True)
     started=models.BooleanField(default=False)
-    Joined=models.ForeignKey(Account,blank=True,on_delete=models.SET_NULL,null=True,related_name='oponent_match')
+    Joined=models.ManyToManyField(Account,blank=True,related_name='oponents_match')
+    want_to_start=models.DateTimeField(blank=True,default=timezone.now)
     court=models.ForeignKey(Courts,blank=False,on_delete=models.SET_NULL,null=True,related_name='court_match')
     date_created=models.DateTimeField(default=timezone.now)
     ranked=models.BooleanField()
+
+def add_to_match(self,account:Account):
+    if self.Joined.count()<4:
+        self.Joined.add(account)
+        self.save()
+        return
+    
+    else:
+        return None
+
 
     def __str__(self):
         return f'{self.Creator.owner.username} -- {self.id}'

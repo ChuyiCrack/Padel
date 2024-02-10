@@ -46,15 +46,29 @@
                 src="https://maps.googleapis.com/maps/api/js?key={{key}}&callback=initMap">
             </script>
             <p><b>Direction:</b> {{match.court.Location}}</p>
-            <div class="player">
-                <img src="{{match.Creator.profile_picture.url}}" alt="">
-                <div class="text">
-                    <p>{{match.Creator}}</p>
-                    <div class="inf_player">
-                        <img id="trophy" src="../../media/all_stuff/Trophy.png" alt="">
-                        <p>{{match.Creator.points}}</p>
+            <div>
+                <div class="player">
+                    <img src="{{match.Creator.profile_picture.url}}" alt="">
+                    <div class="text">
+                        <p>{{match.Creator}}</p>
+                        <div class="inf_player">
+                            <img id="trophy" src="../../media/all_stuff/Trophy.png" alt="">
+                            <p>{{match.Creator.points}}</p>
+                        </div>
                     </div>
                 </div>
+                {% for player in match.Joined.all %}
+                    <div class="player">
+                        <img src="{{player.profile_picture.url}}" alt="">
+                        <div class="text">
+                            <p>{{player}}</p>
+                            <div class="inf_player">
+                                <img id="trophy" src="../../media/all_stuff/Trophy.png" alt="">
+                                <p>{{player.points}}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
         </div>
     </div>

@@ -18,6 +18,7 @@
     border: 2px solid #000;
     border-radius: 5px;
     justify-content: space-between;
+    margin-bottom: 20px;
 }
 
 .players #trophy{
@@ -43,12 +44,6 @@
     justify-content: center;
 }
 
-.players .gif{
-    width: 25px;
-    height: 25px;
-    margin-right: 5px;
-}
-
 .trophy_box{
     display: flex;
     flex-direction: row;
@@ -65,52 +60,22 @@
     
 }
 
-.submit{
+.players .gif{
+    width: 25px;
+    height: 25px;
+    margin-right: 5px;
+}
+
+.form_leave{
+    background-color: red;
     width: fit-content;
-   margin: 15px 20px 0 15px;
-    justify-content: center;
     margin: auto;
 }
 
-.submit a{
-    margin: 0;
-    text-decoration: none;
-    border: 2px solid #000;
-    border-radius: 5px;
-    padding: 2px 5px;
-    background-color: #34a3cf;
-    color: #ffffff;
-}
-
-button{
+.form_leave button{
     padding: 5px 10px;
 }
 
-
-table{
-    border: 2px solid #000;
-    border-collapse: collapse;
-    margin: 20px ;
-}
-
-td,th{
-    border: 2px solid #000;
-}
-
-
-.started{
-    text-align: center;
-}
-.match_inf{
-    margin-top: 20px;
-}
-.match_inf table{
-    margin: auto;
-}
-
-form p{
-    margin: 0 20px 10px 20px;
-}
 @media only screen and (min-width: 700px) {
    .secundary_box{
     width: 400px;

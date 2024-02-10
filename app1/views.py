@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.contrib import messages
 from .forms import CustomUserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
-from django.db.models import Q
+from django.db.models import Q,Count
 from django.http import HttpResponse, HttpResponseNotFound
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import login,logout
@@ -121,8 +121,17 @@ def Matching(request,pk):
 
         else:
             checkbox_value=False
-        new_match=Match.objects.create(Creator=account,court=target_court,ranked=checkbox_value)
-        return redirect('match',new_match.id)
+
+        date=request.POST.get('datetime', None)
+        if date > (timezone.now() + timezone.timedelta(seconds=64800)).strftime('%Y-%m-%dT%H:%M') or date< (timezone.now() - timezone.timedelta(seconds=21600)).strftime('%Y-%m-%dT%H:%M'):
+            messages.error(request,'You can only make matches for the next 24 hours')
+            return redirect('matching',pk)
+
+
+        #new_match=Match.objects.create(Creator=account,court=target_court,ranked=checkbox_value,want_to_start=date)
+        #new_match.Joined.add(account.party_group.Joined)
+        #new_match.save()
+        #return redirect('match',new_match.id)
 
 
     if not (target_court.lat and target_court.lng and target_court.place_id):
@@ -150,7 +159,8 @@ def Matching(request,pk):
         'place_id':place_id,
         'key':secret_key,
         'account':account,
-        'notifications':calculate_notifications(account)
+        'notifications':calculate_notifications(account),
+        'time':(timezone.now()- timezone.timedelta(seconds=21600)).strftime('%Y-%m-%dT%H:%M')
     }
     return render(request,'matching.html',context)
 
@@ -256,7 +266,6 @@ def edit_background(request):
 def match(request,pk):
     account=rewrite_activity(request.user)
     The_Match=Match.objects.get(id=pk)
-
     if 'delete' in request.POST:
         The_Match.delete()
         return redirect('home')
@@ -267,16 +276,40 @@ def match(request,pk):
         return redirect('match',The_Match.id)
 
     elif 'leave' in request.POST:
-        The_Match.Joined=None
+        print(account.party_group)
+        if account.party_group:
+            print('It makes the condition')
+            if account.party_group.Creator == account:
+                The_Match.Joined.remove(account,account.party_group.Joined)
+                The_Match.save()
+                return redirect('home')
+            
+            else:
+                The_Match.Joined.remove(account)
+                The_Match.save()
+                party=Party.objects.get(Joined=account)
+                party.delete()
+                return redirect('home')
+
+
+        else:
+            The_Match.Joined.remove(account)
+            The_Match.save()
+            return redirect('home')
+        
+    elif 'kick' in request.POST:
+        targeted_account=Account.objects.get(id=request.POST.get('kick', None))
+        The_Match.Joined.remove(targeted_account)
         The_Match.save()
-        return redirect('history_matches')
+        return redirect('match',The_Match.id)
 
 
 
     context={
         'match':The_Match,
         'account':account,
-        'notifications':calculate_notifications(account)
+        'notifications':calculate_notifications(account),
+        'user_reminder':[x for x in range(3-(The_Match.Joined.count()))]
     }
     return render(request,'match.html',context)
 
@@ -286,7 +319,7 @@ def history_matches(request):
     context={
         'account':account,
         'messages':message,
-        'notifications':calculate_notifications(account)
+        'notifications':calculate_notifications(account),
     }
     current=Match.objects.filter(Q(Active=True)&(Q(Creator=account)|Q(Joined=account)))
 
@@ -306,7 +339,7 @@ def history_matches(request):
 
 def search_match(request):
     account=rewrite_activity(request.user)
-    Matches=Match.objects.filter(Active=True,Joined__isnull=True)
+    Matches=Match.objects.annotate(num_joined=Count('Joined')).filter(Q(num_joined__lte=3) & Q(Active=True))
     context={
         'account':account,
         'matches':Matches,
@@ -322,7 +355,7 @@ def join_match(request,pk):
     lng=target_match.court.lng
 
     if 'join' in request.POST:
-        target_match.Joined=account
+        target_match.Joined.add(account)
         target_match.save()
         return redirect('match',target_match.id)
 
@@ -458,7 +491,7 @@ def notifications_party(request):
     if 'join' in request.POST:
         id_party_sender= request.POST.get('join', None)
         sender_account=Account.objects.get(id=id_party_sender)
-        if sender_account.friends.count() >=2:
+        if sender_account.party_group:
             party_notification=party_invite.objects.get(receiver=account,sender=sender_account).delete()
             return redirect('notifications_party')
         
@@ -480,7 +513,7 @@ def notifications_party(request):
 def invite_party(request):
     account=rewrite_activity(request.user)
     friends=account.friends.order_by('-last_activity')
-    if account.party_group != None:
+    if account.party_group:
         return redirect('home')
     
     if 'invitation' in request.POST:

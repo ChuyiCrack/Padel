@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% if account.owner == request.user %}
+    {% if target_account.owner == request.user %}
     <title>My Profile</title>
     {% else %}
-    <title>{{account.owner.username}}</title>
+    <title>{{target_account.owner.username}}</title>
     {% endif %}
     {% load static %}
     <link rel="stylesheet" href="{% static 'profile.css' %}">

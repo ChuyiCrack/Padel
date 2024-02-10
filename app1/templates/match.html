@@ -42,16 +42,8 @@
     </script>
 <body>
     {% include 'navbar.html' %}
-    <div class="started">
-        {% if match.started %}
-            <h1>Match Started</h1>
-            <div class="submit">
-                <p>When you finish the match both need to upload results</p>
-                <a href="{% url 'submit_result' match.id %}">Submit results</a>          
-            </div>
-        {% endif %}
-    </div>
     <div class="secundary_box">
+        <p>The match starts at <b>{{match.want_to_start|date:"M.d h:i A"}}</b></p>
         <h2>Players</h2>
         <a class="a_player" href="{% url 'profile' match.Creator.id %}">
             <div class="players">
@@ -65,57 +57,43 @@
                 </div>
             </div>
         </a>
-    </div>
-    <div class="secundary_box">
-        {% if not match.Joined%}
+        {% for joined in match.Joined.all %}
+            <a class="a_player" href="{% url 'profile' joined.id %}">
+                <div class="players">
+                    <img src="{{joined.profile_picture.url}}" alt="">
+                    <div class="third_box">
+                        <p>{{joined}}</p>
+                        <div class="trophy_box">
+                            <img id="trophy" src="../../media/all_stuff/Trophy.png" alt="">
+                            <p>{{joined.points}}</p>
+                        </div>
+                    </div>
+                    {% if not joined == account.party_group.Joined and account == match.Creator %}
+                        <form method="post">
+                            {% csrf_token %}
+                            <button name="kick" value="{{joined.id}}">X</button>
+                        </form>
+                    {% endif %}
+                </div>
+            </a>
+        {% endfor %}
+        {% for i in user_reminder %}
             <div class="players oponent">
                 <img class="gif" src="../../media/all_stuff/loading.gif" alt="">
                 <p>Waiting for players</p>
             </div>
-        {% else %}
-        <a class="a_player" href="{% url 'profile' match.Joined.id %}">
-            <div class="players">
-                <img src="{{match.Joined.profile_picture.url}}" alt="">
-                <div class="third_box">
-                    <p>{{match.Joined.owner.username}}</p>
-                    <div class="trophy_box">
-                        <img id="trophy" src="../../media/all_stuff/Trophy.png" alt="">
-                        <p>{{match.Joined.points}}</p>
-                    </div>
-                </div>
-            </div>
-        </a>
-        {% endif %}
-    <div class="match_inf">
-        <table>
-            <tr>
-                <th>Region</th>
-                <th>Court</th>
-                <th>Ubication</th>
-            </tr>
-            <tr>
-                <td>{{match.court.region}}</td>
-                <td>{{match.court.Name}}</td>
-                <td>{{match.court.Location}}</td>
-            </tr>
-        </table>
+        {% endfor %}
     </div>
-    <form method="post">
-        {% csrf_token %}
-        {% if match.Joined and account == match.Creator and not match.started %}
-            <button name="start">Start Match</button>
-    
-        {% elif account == match.Creator and not match.started %}
-            <button name="delete">Delete</button>
-
-        {% elif not account == match.Creator and not match.started  %}
-            <p><b>{{match.Creator}}</b> needs to start the match</p>
-            <div id="button">
-                <button name="leave">Leave</button>
-            </div>
-        {% endif %}
-    </form>
-
-    
+    {% if account != match.Creator %}
+        <form class="form_leave" method="post">
+            {% csrf_token %}
+            <button name="leave">Leave Match</button>
+        </form>
+    {% else %}
+        <form class="form_leave" method="post">
+            {% csrf_token %}
+            <button name="delete">Delete Match</button>
+        </form>
+    {% endif %}
 </body>
 </html>

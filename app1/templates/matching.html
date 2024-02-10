@@ -51,7 +51,14 @@
             {% if not account.party_group == None and account == account.party_group.Creator %}
                 <form method="post">
                     {% csrf_token %}
-                    <div>
+                    <div class="date_box">
+                        <label for="datetime">Date for the match</label>
+                        <input name="datetime" type="datetime-local" value="{{time}}">
+                        {% for message in messages %}
+                            <p class="messages">{{message}}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="rank_box">
                         <b><label  for="checkbox">Ranked</label></b>
                         <input name="checkbox" id="checkbox" type="checkbox">
                     </div>
