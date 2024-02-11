@@ -65,7 +65,11 @@
                     <button>Create Match</button>
                 </form>
             {% else %}
+                {% if account.party_group %}
+                <b><p>Only the party leader can create a match</p></b>
+                {% else %}
                 <b><p>You need a friend in you party to create a match</p></b>
+                {% endif %}
             {% endif %}
         </div>
     </div>

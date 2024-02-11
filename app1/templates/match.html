@@ -90,10 +90,24 @@
             <button name="leave">Leave Match</button>
         </form>
     {% else %}
+        {% if match.Joined.all.count > 2 and match.want_to_start < time %}
+            {% if not match.started %}
+                <form class="form_leave" method="post">
+                    {% csrf_token %}
+                    <button name="start">Start Match</button>
+                </form>
+            {% else %}
+                <form class="form_leave" method="post">
+                    {% csrf_token %}
+                    <button name="end">End Match</button>
+                </form>
+            {% endif %}
+        {% else %}
         <form class="form_leave" method="post">
             {% csrf_token %}
             <button name="delete">Delete Match</button>
         </form>
+        {% endif %}
     {% endif %}
 </body>
 </html>

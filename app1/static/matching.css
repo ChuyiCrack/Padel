@@ -50,7 +50,7 @@ body{
 .text{
     display: flex;
     flex-direction: row;
-    background-color: red;
+    
 }
 
 .match_inf{
@@ -132,6 +132,35 @@ form button{
 .messages{
     color: rgb(220, 76, 76);
 }
+
+.join_player{
+    border: none;
+}
+
+.join_player .text{
+    margin: auto;
+    text-align: center;
+}
+
+.join_player img{
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.account_container{
+    width: 80%;
+    margin: auto;
+    border: 2px solid #000;
+    border-radius: 10px;
+    height: 116px;
+    overflow-y: scroll;
+    scrollbar-width: 0;
+}
+
+#title_players{
+    margin: 0;
+    border-bottom: 2px solid #000;
+}
 @media only screen and (min-width: 600px) {
     .court .container{
         flex-direction: row;
@@ -154,5 +183,9 @@ form button{
         flex-direction: row;
         margin: 0 auto;
         justify-content:center;
+    }
+
+    .account_container{
+        width: 50%;
     }
 }

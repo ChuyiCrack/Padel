@@ -41,11 +41,17 @@
                         {% endif %}
                     </div>
                 </div>
-                <form class="join_form" method="post">
-                    {% csrf_token %}
-                    <button type="submit" name="join" value="{{party.sender.id}}">join</button>
-                    <p>{% if party.sender.party_group == None %}1{% else %}2{% endif %}/2</p>
-                </form>
+                {% if not any_macth %}
+                    <form class="join_form" method="post">
+                        {% csrf_token %}
+                        <button type="submit" name="join" value="{{party.sender.id}}">join</button>
+                        <p>{% if party.sender.party_group == None %}1{% else %}2{% endif %}/2</p>
+                    </form>
+                {% else %}
+                    <div class="in_match">
+                        <p>You are in a match</p>
+                    </div>
+                {% endif %}
             </div>
         </a>
     {% endfor %}

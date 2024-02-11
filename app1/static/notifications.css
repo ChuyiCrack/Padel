@@ -42,13 +42,14 @@ body{
 }
 .friend_box{
     display: flex;
-    width: 70%;
+    width: 80%;
     align-items: center;
     margin: auto;
     border: 2px solid #000;
     margin-top: 20px;
     border-radius: 10px;
     justify-content: space-between;
+    overflow-x: hidden;
 }
 .inf_friend{
     display: flex;
@@ -110,6 +111,20 @@ button{
     font-weight: 700;
     position: absolute;
     margin-left: 15px;
+}
+
+
+.in_match p{
+    font-size: 8px;
+    margin: 0;
+    width: 50px;
+}
+
+.in_match{
+    background-color: red;
+    border-radius: 8px;
+    margin-right: 10px;
+    
 }
 @media only screen and (min-width: 700px) {
     #username{

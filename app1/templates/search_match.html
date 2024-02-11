@@ -24,14 +24,22 @@
         {% for match in matches %}
             <a href="{% url 'join' match.id %}">
                 <div class="match">
-                    <img src="{{match.Creator.profile_picture.url}}" alt="">
-                    <div class="inf">
-                        <p>{{match.Creator}}</p>
-                        <p><b>Players:</b> 1/2</p>
+                    <div class="head_match">
+                        <p>{% if match.ranked %} Ranked {% else %} Casual {% endif %}</p>
+                        <p id="time"><b>{{match.want_to_start|date:"M.d h:i A"}}</b></p>
                     </div>
-                    <div class="match_inf">
-                        <p><b>Region:</b> {{match.court.region}}</p>
-                        <p><b>Court:</b> {{match.court}}</p>
+                    <div class="match_all_inf">
+                        <img src="{{match.Creator.profile_picture.url}}" alt="">
+                        <div class="centered_inf">
+                            <div class="inf">
+                                <p>{{match.Creator}}</p>
+                                <p><b>Players:</b> {{match.Joined.all.count|add:1}}/4</p>
+                            </div>
+                            <div class="match_inf">
+                                <p><b>Region:</b> {{match.court.region}}</p>
+                                <p><b>Court:</b> {{match.court}}</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </a>

@@ -13,43 +13,40 @@
         <h3>Current Match</h3>
         {% if current %}
             <a href="{% url 'match' current.id %}">
-            {% if current.Joined %}
-                <div class="principal_box">
-                {% if current.Creator == account %}
-                    <img class="enemie" src="{{current.Joined.profile_picture.url}}" alt="">
-                    <div class="sub_box">
-                        <p class="name_acc">{{current.Joined.owner.username}}</p>
-                        {% if current.started %}
-                            <p>Status: Started</p>
-                        {% else %}
-                            <p>Satus: Non started</p>
-                        {% endif %}
-                        <div class="third_box">
-                            <img id="trophy" src="../../media/all_stuff/Trophy.png" alt="">
-                            <p>{{current.Joined.points}}</p>
-                        </div>                
+            {% if current.Joined.all.count >= 3 %}
+                <div class="main_container">
+                    <div class="principal_box">
+                        <div class="all_players">
+                            <div class="part_1">
+                                <div class="box_1 box">
+                                    <img src="{{current.Creator.profile_picture.url}}" alt="">
+                                </div>
+                                <div class="box">
+                                    <img src="{{current.Joined.first.profile_picture.url}}" alt="">
+                                </div>
+                            </div>
+                            <div class="part_2">
+                                {% for player in current.Joined.all %}
+                                    {% if forloop.counter > 1%}
+                                        <div class="box border_2 {% if forloop.counter == 2 %} border_2 {% endif%}">
+                                            <img src="{{player.profile_picture.url}}" alt="">
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
                     </div>
-                {% else %}
-                    <img class="enemie" src="{{current.Creator.profile_picture.url}}" alt="">
-                    <div class="sub_box">
-                        <p class="name_acc">{{current.Creator.owner.username}}</p>
-                        {% if current.started %}
-                            <p>Status: Started</p>
-                        {% else %}
-                            <p>Satus: Non started</p>
-                        {% endif %}
-                        <div class="third_box">
-                            <img id="trophy" src="../../media/all_stuff/Trophy.png" alt="">
-                            <p>{{current.Creator.points}}</p>
-                        </div>                
+                    <div class="secundary_box">
+                        <p>{{current.court}}</p>
+                        <p>{{current.want_to_start|date:"M.d h:i A"}}</p>
                     </div>
-                {% endif %}
                 </div>
             {% else %}
                 <div class="waiting">
                     <p>{{current.court.Name}}</p>
                     <p>{{current.date_created}}</p>
-                    <p style="color: rgb(32, 135, 204);">Waiting For players</p>
+                    <p>Players: <b>{{current.Joined.all.count|add:1}}</b>/4</p>
+                    <p style="color: rgb(32, 135, 204);">Waiting for more players</p>
                     <img id="gif" src="../../media/all_stuff/loading.gif" alt="">
                 </div>
             {% endif %}

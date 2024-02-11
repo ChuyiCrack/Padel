@@ -65,9 +65,12 @@
             </div>
             {% endif %}
         </div>
-
-        <p>Working from my lap</p>
-             
+        {% if not account.party_group.Creator == account and account.party_group %}
+            <form class="leave_party" method="post">
+                {% csrf_token %}
+                <button type="submit" name="kick" value="{{account.party_group.id}}">Leave Party</button>
+            </form>
+        {% endif %}
     </div> 
 </body>
 </html>

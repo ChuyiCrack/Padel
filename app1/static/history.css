@@ -1,6 +1,6 @@
 .current{
     width: 250px;
-    height: 150px;
+    height: fit-content;
     margin: auto;
     text-align: center;
     border: 2px solid #000;
@@ -42,28 +42,45 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-
-    margin-top: 17px;
 }
-.third_box{
+
+.main_container{
     display: flex;
     flex-direction: row;
-    justify-content: center;
-    align-items: center;
-}
-.sub_box{
-    margin-left: 10px;
 }
 
-#trophy{
-    width: 18px;
-    height: 18px;
-    margin-top: 5px;
+.all_players{
+    width: 100px;
+    height:102px;
+    border: 2px solid #000;
 }
 
-.name_acc{
+.all_players .box{
+    width: 50px;
+    height: 50px;
+}
+
+.part_1{
+    display: flex;
+    flex-direction: row;
+    border-bottom: 2px solid #000;
+}
+
+.part_2{
+    display: flex;
+    flex-direction: row;
+}
+.box img{
     width: 100%;
-    text-align: center;
+    height: 100%;
+}
+
+.box_1{
+    border-right: 2px solid #000;
+}
+
+.border_2{
+    border-right: 2px solid #000;
 }
 
 #text{

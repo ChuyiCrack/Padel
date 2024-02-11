@@ -10,12 +10,13 @@ h1{
 
 .match{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     margin-bottom: 20px;
     width: 100%;
     border: 2px solid #000;
-    height: 50px;
+    height: fit-content;
     border-radius: 10px;
+
 }
 
 .principal_box a{
@@ -24,7 +25,6 @@ h1{
 }
 
 .match img{
-    border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
     width: 50px;
 }
@@ -123,4 +123,53 @@ h1{
 .a_account{
     text-decoration: None;
     color: #000;
+}
+
+.centered_inf{
+    display: flex;
+    flex-direction: row;
+    overflow-x: hidden;
+}
+
+.head_match{
+    border-bottom: 2px solid #000;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.head_match p{
+    margin: 0;
+}
+
+.head_match #time{
+    margin-left: 10px;
+}
+
+.match_all_inf{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+@media only screen and (min-width: 500px) {
+    .principal_box{
+        width: 500px;
+    }
+    .centered_inf{
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        text-align: center;
+    }
+    .match_inf{
+        width: fit-content;
+        margin-left: auto;
+        overflow-y: hidden;
+        margin: 0;
+    }
+
+    .match_inf p{
+        width: fit-content;
+    }
 }

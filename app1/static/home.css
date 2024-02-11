@@ -104,6 +104,10 @@ th,td{
     margin-right: 0;
 }
 
+.leave_party{
+    margin-top: 10px;
+}
+
 @media only screen and (min-width: 700px) {
     #player_1 img{
         width: 100px;
