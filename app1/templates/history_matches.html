@@ -39,12 +39,14 @@
                     <div class="secundary_box">
                         <p>{{current.court}}</p>
                         <p>{{current.want_to_start|date:"M.d h:i A"}}</p>
+                        <p>{% if current.started %} Started {% else %}Non Started{% endif %}</p>
                     </div>
                 </div>
             {% else %}
                 <div class="waiting">
                     <p>{{current.court.Name}}</p>
-                    <p>{{current.date_created}}</p>
+                    <b><p class="p_match">{% if match.ranked %} Ranked {% else %} Casual {% endif %}</p></b>
+                    <p>{{current.want_to_start}}</p>
                     <p>Players: <b>{{current.Joined.all.count|add:1}}</b>/4</p>
                     <p style="color: rgb(32, 135, 204);">Waiting for more players</p>
                     <img id="gif" src="../../media/all_stuff/loading.gif" alt="">

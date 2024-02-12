@@ -219,6 +219,14 @@ form .button_container{
     
 }
 
+.secundary_box{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    width: 100%;
+    overflow-x: hidden;
+}
 .match_box{
     display: flex;
     border-bottom: 2px solid #000;

@@ -20,7 +20,7 @@ def rewrite_activity(user):
 
 def check_matches(account:Account):
     any_match=Match.objects.filter(
-        ((Q(Creator=account))|(Q(Joined=account))) & (Q(Active=True) & Q(started=True))
+        ((Q(Creator=account))|(Q(Joined=account))) & (Q(Active=True))
     )
     if any_match.exists():
         return any_match.first().id
@@ -95,7 +95,8 @@ def home(request):
     
     context={
         'account':account,
-        'notifications':calculate_notifications(account)
+        'notifications':calculate_notifications(account),
+        'any_match':check_matches(account)
     }
     return render(request,'home.html',context)
 
@@ -378,6 +379,25 @@ def search_match(request):
         'matches':Matches,
         'notifications':calculate_notifications(account)
     }
+    
+    if request.method == 'POST':
+        ranked_s= True if 'ranked' in request.POST else False
+        casual_s= False if 'casual' in request.POST else True
+        search= request.POST.get('search',None)
+        if casual_s and ranked_s:
+            new_matches=Matches.filter((Q(Creator__owner__username__icontains=search) | Q(Joined__owner__username__icontains=search)) & Q(ranked=ranked_s))
+            print('condition fullfiled')
+        elif casual_s == False and ranked_s == False:
+            new_matches=Matches.filter((Q(Creator__owner__username__icontains=search) | Q(Joined__owner__username__icontains=search)) & Q(ranked=casual_s))
+
+        else:
+            new_matches=Matches.filter((Q(Creator__owner__username__icontains=search) | Q(Joined__owner__username__icontains=search)))
+        
+        print(new_matches)
+        context['matches']=new_matches
+        return render(request,'search_match.html',context)
+            
+    
     return render(request,'search_match.html',context)
 
 
@@ -602,9 +622,4 @@ def search_friends(request):
         Selected_Users=Account.objects.filter(owner__username__icontains=searched)
         context['filtered']=Selected_Users
         return render(request,'search_friends.html',context)
-
-    context={
-        'account':account,
-        'notifications':calculate_notifications(account),
-    }
     return render(request,'search_friends.html',context)

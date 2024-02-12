@@ -161,6 +161,18 @@ form button{
     margin: 0;
     border-bottom: 2px solid #000;
 }
+
+.ultimate_infmatch{
+    margin-top: 15px;
+}
+
+.p_match{
+    margin: 0;
+}
+
+.match_message{
+    color: rgb(238, 84, 84);
+}
 @media only screen and (min-width: 600px) {
     .court .container{
         flex-direction: row;

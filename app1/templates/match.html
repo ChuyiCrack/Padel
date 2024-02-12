@@ -43,10 +43,11 @@
 <body>
     {% include 'navbar.html' %}
     <div class="secundary_box">
+        <h1>{% if match.ranked %} Ranked  {% else %} Casual {% endif %}</h1>
         <p>The match starts at <b>{{match.want_to_start|date:"M.d h:i A"}}</b></p>
         <h2>Players</h2>
         <a class="a_player" href="{% url 'profile' match.Creator.id %}">
-            <div class="players">
+            <div class="players {% if match.ranked%} team_1 {% endif %}">
                 <img src="{{match.Creator.profile_picture.url}}" alt="">
                 <div class="third_box">
                     <p>{{match.Creator.owner.username}}</p>
@@ -59,7 +60,7 @@
         </a>
         {% for joined in match.Joined.all %}
             <a class="a_player" href="{% url 'profile' joined.id %}">
-                <div class="players">
+                <div class="players {% if forloop.counter == 1 and match.ranked %} team_1 {% elif match.ranked %} team_2 {% endif %}">
                     <img src="{{joined.profile_picture.url}}" alt="">
                     <div class="third_box">
                         <p>{{joined}}</p>

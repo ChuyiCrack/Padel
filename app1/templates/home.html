@@ -12,8 +12,17 @@
     <div class="principal_box">
         <div>
             <div>
-                <a href="{% url 'regions' %}">Create a Match</a>
-                <a href="{% url 'search_match' %}">Search Match</a>
+                {% if not any_match %}
+                    <a href="{% url 'regions' %}">Create a Match</a>
+                    <a href="{% url 'search_match' %}">Search Match</a>
+                {% else %}
+                    <a class="link_match" href="{% url 'match' any_match %}">
+                        <div class="curr_match">
+                            <div class="loader"></div>
+                            <p>Active Match</p>
+                        </div>
+                    </a>
+                {% endif %}
             </div>
             <table>
                 <tr>

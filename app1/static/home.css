@@ -108,6 +108,47 @@ th,td{
     margin-top: 10px;
 }
 
+.curr_match{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: auto;
+    width: fit-content;
+    border: 5px solid #349e46;
+    margin-top: 20px;
+    padding: 5px 15px;
+    border-radius: 10px;
+    background-color: #022410;
+}
+
+.curr_match:hover{
+    background-color: #04682e;
+
+}
+
+.link_match{
+    text-decoration: none;
+    color: #fff;
+}
+.loader {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background-color: #69ffa8;
+    animation: 1.5s pulse infinite ease-in-out;
+    margin-right: 15px;
+  }
+
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 #69ffa8;
+    }
+  
+    100% {
+      box-shadow: 0 0 0 14px #69ffa800;
+    }
+  }
+
 @media only screen and (min-width: 700px) {
     #player_1 img{
         width: 100px;

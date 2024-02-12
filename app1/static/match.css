@@ -76,6 +76,15 @@
     padding: 5px 10px;
 }
 
+.team_1{
+    background-color: rgb(60, 125, 221);
+    color: #fff;
+}
+
+.team_2{
+    background-color: rgb(231, 78, 67);
+    color: #fff;
+}
 @media only screen and (min-width: 700px) {
    .secundary_box{
     width: 400px;

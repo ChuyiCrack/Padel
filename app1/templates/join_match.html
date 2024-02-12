@@ -33,6 +33,7 @@
 </head>
 <body>
     {% include 'navbar.html' %}
+    
     <div class="container_supreme">
         <div class="court">
             <div class="container">
@@ -75,10 +76,36 @@
             </div>
         </div>
     </div>
-    <form method="post">
-        {% csrf_token %}
-        <button name="join">Join Match</button>
-    </form>
+    <div class="ultimate_infmatch">
+        <b><p class="p_match">{% if match.ranked %} Ranked {% else %} Casual {% endif %}</p></b>
+        <p class="p_match">Starts at {{match.want_to_start|date:"M.d h:i A"}}</p>
+    </div>
+
+    {% if not account.party_group%}
+        {% if not match.ranked %}
+        <form method="post">
+            {% csrf_token %}
+            <button name="join">Join Match</button>
+        </form>
+        {% else %}
+            <div class="match_message">
+                <p>You need to be in a group to join a ranked match</p>
+            </div>
+        {% endif %}
+    
+    {% else %}
+            {% if account.party_group.Creator == account %}
+                <form method="post">
+                    {% csrf_token %}
+                    <button name="join">Join Match</button>
+                </form>
+
+            {% else %}
+                <div class="match_message">
+                    <p>Only the leader can join to the matches</p>
+                </div>
+            {% endif %}
+    {% endif %}
 
 </body>
 </html>

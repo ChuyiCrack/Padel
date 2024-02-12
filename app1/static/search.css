@@ -151,6 +151,33 @@ h1{
     flex-direction: row;
     align-items: center;
 }
+
+.clasify{
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    margin: auto;
+    margin-bottom: 10px;
+}
+
+.clasify input[type=search]{
+    width: 250px;
+    height: 40px;
+}
+
+.clasify input[type=checkbox]{
+    transform: scale(1.5);
+    margin-right: 5px;
+}
+
+.clasify label{
+    font-size: 20px;
+    margin-right: 5px;
+}
+
+.clasify button{
+    padding: 5px 10px;
+}
 @media only screen and (min-width: 500px) {
     .principal_box{
         width: 500px;
