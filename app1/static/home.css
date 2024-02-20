@@ -130,6 +130,11 @@ th,td{
     text-decoration: none;
     color: #fff;
 }
+
+.messages{
+    color: rgb(223, 95, 95);
+    font-size: 20px;
+}
 .loader {
     height: 20px;
     width: 20px;

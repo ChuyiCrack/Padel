@@ -44,7 +44,12 @@
     {% include 'navbar.html' %}
     <div class="secundary_box">
         <h1>{% if match.ranked %} Ranked  {% else %} Casual {% endif %}</h1>
-        <p>The match starts at <b>{{match.want_to_start|date:"M.d h:i A"}}</b></p>
+        {% if not match.started %}
+            <p>The match starts at <b>{{match.want_to_start|date:"M.d h:i A"}}</b></p>
+        
+        {% else %}
+            <p>Match Started</p>
+        {% endif %}
         <h2>Players</h2>
         <a class="a_player" href="{% url 'profile' match.Creator.id %}">
             <div class="players {% if match.ranked%} team_1 {% endif %}">

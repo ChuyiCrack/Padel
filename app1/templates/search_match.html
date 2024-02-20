@@ -17,21 +17,20 @@
         
         {% else %}
             <h1>Current Matches</h1>
+            <form class="clasify" method="post">
+                {% csrf_token %}
+                <div>
+                    <input type="search" name="search" id="search" placeholder="Search User that can be in a match">
+                </div>
+                <div style="display: flex; align-items: center; margin-top: 10px;">
+                    <label for="ranked">Ranked</label>
+                    <input name="ranked" id="ranked" type="checkbox">
+                    <label for="casual">Casual</label>
+                    <input name="casual" id="casual" type="checkbox">
+                    <button type="submit">Search</button>
+                </div>
+            </form>
         {% endif %}
-    <form class="clasify" method="post">
-        {% csrf_token %}
-        <div>
-            <input type="search" name="search" id="search" placeholder="Search User that can be in a match">
-        </div>
-        <div style="display: flex; align-items: center; margin-top: 10px;">
-            <label for="ranked">Ranked</label>
-            <input name="ranked" id="ranked" type="checkbox">
-            <label for="casual">Casual</label>
-            <input name="casual" id="casual" type="checkbox">
-            <button type="submit">Search</button>
-        </div>
-        
-    </form>
     </div>
     <div class="principal_box">
         {% for match in matches %}

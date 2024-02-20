@@ -286,8 +286,23 @@ def edit_background(request):
 
 def match(request,pk):
     account=rewrite_activity(request.user)
-    The_Match=Match.objects.get(id=pk)
+    try:
+        The_Match=Match.objects.get(id=pk)
 
+    except ObjectDoesNotExist:
+        messages.error(request,'The Match does not exist or has been removed')
+        return redirect('home')
+
+    if The_Match.ranked and not account.party_group:
+        if The_Match.Creator == account:
+            The_Match.delete()
+            return redirect('home')
+
+        else:
+            The_Match.Joined.remove(account)
+            return redirect('home')
+    
+    
     if not The_Match.Active:
         return redirect('history_matches')
 
@@ -306,7 +321,13 @@ def match(request,pk):
     elif 'leave' in request.POST:
         print(account.party_group)
         if account.party_group:
-            print('It makes the condition')
+            if account.party_group.Joined == account and account.party_group.Creator == The_Match.Creator:
+                The_Match.delete()
+                party_to_delete=Party.objects.get(id=account.party_group.id)
+                party_to_delete.delete()
+                messages.error(request,'The Team of the party leader has left the match')
+                return redirect('home')
+
             if account.party_group.Creator == account:
                 The_Match.Joined.remove(account,account.party_group.Joined)
                 The_Match.save()
@@ -373,7 +394,11 @@ def history_matches(request):
 
 def search_match(request):
     account=rewrite_activity(request.user)
-    Matches=Match.objects.annotate(num_joined=Count('Joined')).filter(Q(num_joined__lte=2) & Q(Active=True))
+    Matches=Match.objects.annotate(num_joined=Count('Joined')).filter(Q(num_joined__lte=2) & Q(Active=True) & Q(started=False))
+    for match in Matches:
+        if (match.want_to_start + timezone.timedelta(seconds=21600)) <= (timezone.now()- timezone.timedelta(seconds=21600)):
+            match.delete()
+    
     context={
         'account':account,
         'matches':Matches,
@@ -386,7 +411,6 @@ def search_match(request):
         search= request.POST.get('search',None)
         if casual_s and ranked_s:
             new_matches=Matches.filter((Q(Creator__owner__username__icontains=search) | Q(Joined__owner__username__icontains=search)) & Q(ranked=ranked_s))
-            print('condition fullfiled')
         elif casual_s == False and ranked_s == False:
             new_matches=Matches.filter((Q(Creator__owner__username__icontains=search) | Q(Joined__owner__username__icontains=search)) & Q(ranked=casual_s))
 
