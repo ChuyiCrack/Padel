@@ -29,6 +29,9 @@ def check_matches(account:Account):
 
 def calculate_notifications(account:Account):
     party_notifications=party_invite.objects.filter(receiver=account)
+    for party in party_notifications:
+        if party.sender.party_group:
+            party.delete() 
     friend_notifications=friend_requests.objects.filter(receiver=account)
     return (friend_notifications.count() + party_notifications.count())
 
@@ -96,7 +99,7 @@ def home(request):
     context={
         'account':account,
         'notifications':calculate_notifications(account),
-        'any_match':check_matches(account)
+        'any_match':check_matches(account),
     }
     return render(request,'home.html',context)
 
@@ -319,7 +322,6 @@ def match(request,pk):
         return redirect('match',The_Match.id)
 
     elif 'leave' in request.POST:
-        print(account.party_group)
         if account.party_group:
             if account.party_group.Joined == account and account.party_group.Creator == The_Match.Creator:
                 The_Match.delete()
@@ -333,6 +335,12 @@ def match(request,pk):
                 The_Match.save()
                 return redirect('home')
             
+            elif account.party_group.Joined == account and The_Match.ranked:
+                The_Match.Joined.remove(account,account.party_group.Creator)
+                The_Match.save()
+                party_to_delete=Party.objects.get(id=account.party_group.id)
+                party_to_delete.delete()
+                return redirect('home')
             else:
                 The_Match.Joined.remove(account)
                 The_Match.save()
@@ -345,7 +353,20 @@ def match(request,pk):
             The_Match.Joined.remove(account)
             The_Match.save()
             return redirect('home')
-        
+    
+    elif 'kick_rank' in request.POST:
+        for user in The_Match.Joined.all():
+            if user != The_Match.Creator.party_group.Joined:
+                if (The_Match.Joined.all().count()) >= 3:
+                    user1=user.party_group.Joined if user.party_group.Creator == user else user.party_group.Creator
+                    The_Match.Joined.remove(user,user1)
+                    
+                else:
+                    The_Match.Joined.remove(user)
+
+                The_Match.save()
+                return redirect('match',The_Match.id)
+
     elif 'kick' in request.POST:
         targeted_account=Account.objects.get(id=request.POST.get('kick', None))
         The_Match.Joined.remove(targeted_account)
@@ -355,6 +376,7 @@ def match(request,pk):
     elif 'end' in request.POST:
         The_Match.Active=False
         The_Match.save()
+        new_result=result.objects.create(type_match='casual',target_match=The_Match)
         return redirect('history_matches')
 
 
@@ -377,7 +399,7 @@ def history_matches(request):
         'notifications':calculate_notifications(account),
     }
     current=Match.objects.filter(Q(Active=True)&(Q(Creator=account)|Q(Joined=account)))
-
+    
 
     if current.exists():
         context['current']=current[0]
@@ -385,9 +407,8 @@ def history_matches(request):
     else:
         context['current']=None
 
-    match_completed=result.objects.filter((Q(target_match__Active=False)&(Q(target_match__Creator=account)|Q(target_match__Joined=account)))).order_by('-target_match__date_created')
+    match_completed=result.objects.filter((Q(target_match__Active=False)&(Q(target_match__Creator=account)|Q(target_match__Joined=account)))).order_by('-target_match__date_created').distinct()
     context['history_matches']=match_completed
-
 
     return render(request,'history_matches.html',context)
 
@@ -395,6 +416,7 @@ def history_matches(request):
 def search_match(request):
     account=rewrite_activity(request.user)
     Matches=Match.objects.annotate(num_joined=Count('Joined')).filter(Q(num_joined__lte=2) & Q(Active=True) & Q(started=False))
+    number_matches=Matches.count()
     for match in Matches:
         if (match.want_to_start + timezone.timedelta(seconds=21600)) <= (timezone.now()- timezone.timedelta(seconds=21600)):
             match.delete()
@@ -402,6 +424,7 @@ def search_match(request):
     context={
         'account':account,
         'matches':Matches,
+        'total_matches':number_matches,
         'notifications':calculate_notifications(account)
     }
     
@@ -463,8 +486,6 @@ def submit_result(request,pk):
     except result.DoesNotExist:
         Result=result.objects.create(target_match=targeted_match)
 
-    if not (account==targeted_match.Joined or account==targeted_match.Creator):
-        return redirect('home')
 
     if request.method == 'POST':
         creator=request.POST.get('creator')
@@ -621,7 +642,8 @@ def invite_party(request):
         'friends':friends,
         'current_time':(timezone.now() - timezone.timedelta(seconds=900)),
         '2min':(timezone.now() - timezone.timedelta(seconds=120)),
-        'notifications':calculate_notifications(account)
+        'notifications':calculate_notifications(account),
+        'any_match':check_matches(account)
     }
 
     party_invitation=party_invite.objects.filter(sender=account)

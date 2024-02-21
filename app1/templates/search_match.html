@@ -10,13 +10,8 @@
 <body>
     {% include 'navbar.html' %}
     <div class="first_box">
-        {% if matches|length == 0%}
-            <h1>No current matches</h2>
-            <img id="gif" src="../../media/all_stuff/tennis.gif" alt="">
-            
-        
-        {% else %}
-            <h1>Current Matches</h1>
+        {% if total_matches >= 1 %} 
+            <h1>Current Matches</h1>  
             <form class="clasify" method="post">
                 {% csrf_token %}
                 <div>
@@ -30,13 +25,28 @@
                     <button type="submit">Search</button>
                 </div>
             </form>
+            <div class="active_information">
+                <div class="sub_box">
+                    <div class="non_started box"></div>
+                    <p>Not Started</p>
+                </div>
+                <div class="sub_box">
+                    <div class="started box"></div>
+                    <p>Started</p>
+                </div>
+            </div>
         {% endif %}
+        {% if matches|length == 0%}
+            <h1>No current matches</h2>
+            <img id="gif" src="../../media/all_stuff/tennis.gif" alt="">
+        {% endif %}
+        
     </div>
     <div class="principal_box">
         {% for match in matches %}
             <a href="{% url 'join' match.id %}">
                 <div class="match">
-                    <div class="head_match">
+                    <div class="head_match {% if match.started %} match_started {% else %} match_nonstarted {% endif %}">
                         <p>{% if match.ranked %} Ranked {% else %} Casual {% endif %}</p>
                         <p id="time"><b>{{match.want_to_start|date:"M.d h:i A"}}</b></p>
                     </div>

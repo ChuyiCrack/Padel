@@ -136,6 +136,8 @@ h1{
     display: flex;
     flex-direction: row;
     justify-content: center;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
 }
 
 .head_match p{
@@ -177,6 +179,49 @@ h1{
 
 .clasify button{
     padding: 5px 10px;
+}
+
+.match_started{
+    background-color: rgba(233, 103, 103, 0.863);
+}
+
+.match_nonstarted{
+    background-color: rgb(58, 224, 236);
+}
+
+.active_information{
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    margin-bottom: 15px;
+}
+
+.active_information p{
+    margin: 0;
+}
+
+.active_information .box{
+    border: 2px solid #000;
+    width: 15px;
+    height: 15px;
+}
+
+.active_information .sub_box{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.sub_box{
+    margin-right: 8px;
+}
+
+.non_started{
+    background-color: rgb(58, 224, 236);
+}
+
+.started{
+    background-color: rgba(233, 103, 103, 0.863);
 }
 @media only screen and (min-width: 500px) {
     .principal_box{

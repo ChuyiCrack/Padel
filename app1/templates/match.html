@@ -48,7 +48,11 @@
             <p>The match starts at <b>{{match.want_to_start|date:"M.d h:i A"}}</b></p>
         
         {% else %}
-            <p>Match Started</p>
+            {% if account == match.Creator or account == match.Joined.all.1.party_group.Creator %}
+                <p>When you finish upload the results <a href="{% url 'submit_result' match.id %}">here</a></p>
+            {% else %}
+                <p>Match Started</p>
+            {% endif %}
         {% endif %}
         <h2>Players</h2>
         <a class="a_player" href="{% url 'profile' match.Creator.id %}">
@@ -74,7 +78,7 @@
                             <p>{{joined.points}}</p>
                         </div>
                     </div>
-                    {% if not joined == account.party_group.Joined and account == match.Creator %}
+                    {% if not joined == account.party_group.Joined and account == match.Creator and not match.ranked %}
                         <form method="post">
                             {% csrf_token %}
                             <button name="kick" value="{{joined.id}}">X</button>
@@ -83,6 +87,14 @@
                 </div>
             </a>
         {% endfor %}
+        {% if match.ranked and match.Joined.all.count >= 2 and account == match.Creator %}
+            <div class="ranked_button">
+                <form method="post">
+                    {% csrf_token %}
+                    <button name="kick_rank" value="{{joined.id}}">X</button>
+                </form>
+            </div>
+        {% endif %}
         {% for i in user_reminder %}
             <div class="players oponent">
                 <img class="gif" src="../../media/all_stuff/loading.gif" alt="">
@@ -111,8 +123,9 @@
         {% else %}
         <form class="form_leave" method="post">
             {% csrf_token %}
-            <button name="delete">Delete Match</button>
+            <button name="delete">Delete Match</button>  
         </form>
+        <p id="advise">You can start the match until {{match.want_to_start}}</p>
         {% endif %}
     {% endif %}
 </body>

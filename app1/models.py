@@ -53,21 +53,12 @@ class Match(models.Model):
     date_created=models.DateTimeField(default=timezone.now)
     ranked=models.BooleanField()
 
-def add_to_match(self,account:Account):
-    if self.Joined.count()<4:
-        self.Joined.add(account)
-        self.save()
-        return
-    
-    else:
-        return None
-
-
     def __str__(self):
         return f'{self.Creator.owner.username} -- {self.id}'
     
 class result(models.Model):
     target_match=models.ForeignKey(Match,on_delete=models.CASCADE,related_name='match')
+    type_match=models.CharField(max_length=15,default='UNDEFINIED',blank=True)
     winner=models.ForeignKey(Account,blank=True,on_delete=models.SET_NULL,null=True,related_name='won_matches')
     looser=models.ForeignKey(Account,blank=True,on_delete=models.SET_NULL,null=True,related_name='losed_matches')
     res_creator=models.CharField(max_length=15,default='NONE',blank=True)

@@ -3,8 +3,9 @@
 }
 
 .secundary_box{
+    position: relative;
     text-align: center;
-    width: 80%;
+    width: 400px;
     margin: auto;
     margin-bottom: 20px;
 }
@@ -67,11 +68,24 @@
 }
 
 .form_leave{
-    background-color: red;
     width: fit-content;
     margin: auto;
 }
 
+#advise{
+    text-align: center;
+}
+
+.ranked_button{
+    position: absolute;
+    margin-left: 370px;
+    bottom: 40px;
+    background-color: #0f0;
+}
+.ranked_button form button{
+    padding: 3px 5px;
+    
+}
 .form_leave button{
     padding: 5px 10px;
 }
@@ -84,10 +98,4 @@
 .team_2{
     background-color: rgb(231, 78, 67);
     color: #fff;
-}
-@media only screen and (min-width: 700px) {
-   .secundary_box{
-    width: 400px;
-   }
-
 }

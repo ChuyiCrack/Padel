@@ -66,66 +66,37 @@
         <div class="box_matches">
             {% if history_matches|length > 0 %}
                 {% for result in history_matches  %}
-                    <a class="link_match" href="">
-                    {% if result.target_match.Creator == account  %}
-                        {% if result.winner == account %}
-                            <div class="match_box  winner">
-                                <div class="texti">
-                                    <p>Won</p>
-                                    <div class="trophy_box">
-                                        <img id="trophy" src="../../media/all_stuff/Trophy.png" alt="">
-                                        <p>+35</p>
-                                    </div>
-                                </div>
-                        {% else %}
-                            <div class="match_box looser">
-                                <div class="texti">
-                                    <p>Lost</p>
-                                    <div class="trophy_box">
-                                        <img id="trophy" src="../../media/all_stuff/Trophy.png" alt="">
-                                        <p>-35</p>
-                                    </div>
-                                </div>
-                        {% endif %}
-                                <img src="{{result.target_match.Joined.profile_picture.url}}" alt="">
-                                <div class="match_inf">
-                                    <p>{{result.target_match.Joined}}</p>
-                                    <p>{{result.creator_score}}-{{result.joined_score}}</p>
-                                    <p id="date">{{result.target_match.date_created}}</p>
-                                </div>
-                            </div>
+                    {% if result.ranked %}
 
                     {% else %}
-                        {% if result.winner == account %}
-                        <div class="match_box  winner">
-                            <div class="texti">
-                                <p>Won</p>
-                                <div class="trophy_box">
-                                    <img id="trophy" src="../../media/all_stuff/Trophy.png" alt="">
-                                    <p>+35</p>
-                                </div>
-                            </div>
-                        {% else %}
-                            <div class="match_box looser">
-                                <div class="texti">
-                                    <p>Lost</p>
-                                    <div class="trophy_box">
-                                        <img id="trophy" src="../../media/all_stuff/Trophy.png" alt="">
-                                        <p>-35</p>
+                        <div class="casual">
+                            <div class="allresult_players">
+                                <div class="half_1">
+                                    <div class="img_1">
+                                        <img class="picture" src="{{result.target_match.Creator.profile_picture.url}}" alt="">
+                                    </div>
+                                    <div class="img_2">
+                                        <img class="picture" src="{{result.target_match.Joined.first.profile_picture.url}}" alt="">
                                     </div>
                                 </div>
-                        {% endif %}
-                        <img src="{{result.target_match.Creator.profile_picture.url}}" alt="">
-                                <div class="match_inf">
-                                    <p>{{result.target_match.Creator}}</p>
-                                    <p>{{result.joined_score}}-{{result.creator_score}}</p>
-                                    <p id="date">{{result.target_match.date_created}}</p>
+                                <div class="half_2">
+                                    {% for player in result.target_match.Joined.all %}
+                                        {% if forloop.counter > 1 %}
+                                            <div class="">
+                                                <img class="picture" src="{{player.profile_picture.url}}" alt="">
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
                                 </div>
                             </div>
+                            <div class="inf_casual_match">
+                                <p>Casual</p>
+                                <p>{{result.target_match.court}}</p>
+                                <p>started at {{result.target_match.want_to_start|date:"M.d h:i A"}}</p>
+                            </div>
+                        </div>
                     {% endif %}
-                    </a>
                 {% endfor %}
-
             {% else %}
                 <p>No results</p>
             {% endif %}

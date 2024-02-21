@@ -84,3 +84,12 @@ form button{
     border-radius: 5px;
     background-color: #9e9e9ee1;
 }
+
+.advice{
+    text-align: center;
+    color: rgb(187, 44, 44);
+    display: flex;
+    flex-direction: row;
+}
+
+.advice a,p{margin: 0;}

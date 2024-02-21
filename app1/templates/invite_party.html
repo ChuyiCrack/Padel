@@ -9,6 +9,12 @@
 </head>
 <body>
     {% include 'navbar.html' %}
+    {% if any_match %}
+    <div class="advice">
+        <p>You can't invite other people cause you are in a match now.  <a href="{% url 'match' any_match %}">Match</a></p>
+        
+    </div>
+    {% endif %}
     <div class="friends_box">
         {% if account.friends.all.count > 0 %}
             {% for friend in friends %}
@@ -29,7 +35,12 @@
                             </div>
                         </div>
                     </div>
-                    {% if party == None or party.date|date:'U' < 2min|date:'U' %}
+
+                    {% if any_match %}
+                        <div class="coldown">
+                            <p>Can't Invite</p>
+                        </div>
+                    {% elif party == None or party.date|date:'U' < 2min|date:'U' %}
                         <form method="post">
                             {% csrf_token %}
                             <button value="{{friend.id}}" name="invitation">Invite</button>
