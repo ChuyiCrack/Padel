@@ -51,7 +51,7 @@
             {% if account == match.Creator or account == match.Joined.all.1.party_group.Creator %}
                 <p>When you finish upload the results <a href="{% url 'submit_result' match.id %}">here</a></p>
             {% else %}
-                <p>Match Started</p>
+                <p>Results can onlly be sent by <b>{{account.party_group.Creator}}</b></p>
             {% endif %}
         {% endif %}
         <h2>Players</h2>
@@ -87,7 +87,7 @@
                 </div>
             </a>
         {% endfor %}
-        {% if match.ranked and match.Joined.all.count >= 2 and account == match.Creator %}
+        {% if match.ranked and match.Joined.all.count >= 2 and account == match.Creator and not match.started %}
             <div class="ranked_button">
                 <form method="post">
                     {% csrf_token %}

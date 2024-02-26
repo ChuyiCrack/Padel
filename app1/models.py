@@ -50,7 +50,7 @@ class Match(models.Model):
     Joined=models.ManyToManyField(Account,blank=True,related_name='oponents_match')
     want_to_start=models.DateTimeField(blank=True,default=timezone.now)
     court=models.ForeignKey(Courts,blank=False,on_delete=models.SET_NULL,null=True,related_name='court_match')
-    date_created=models.DateTimeField(default=timezone.now)
+    date_started=models.DateTimeField(blank=True,null=True)
     ranked=models.BooleanField()
 
     def __str__(self):
@@ -59,8 +59,8 @@ class Match(models.Model):
 class result(models.Model):
     target_match=models.ForeignKey(Match,on_delete=models.CASCADE,related_name='match')
     type_match=models.CharField(max_length=15,default='UNDEFINIED',blank=True)
-    winner=models.ForeignKey(Account,blank=True,on_delete=models.SET_NULL,null=True,related_name='won_matches')
-    looser=models.ForeignKey(Account,blank=True,on_delete=models.SET_NULL,null=True,related_name='losed_matches')
+    winner=models.ManyToManyField(Account,blank=True,related_name='won_matches')
+    looser=models.ManyToManyField(Account,blank=True,related_name='losed_matches')
     res_creator=models.CharField(max_length=15,default='NONE',blank=True)
     res_joined=models.CharField(max_length=15,default='NONE',blank=True)
     creator_score=models.PositiveIntegerField(blank=True, default=0)

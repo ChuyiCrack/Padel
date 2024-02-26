@@ -18,6 +18,19 @@ def rewrite_activity(user):
     account.save()
     return account
 
+def delete_matches():
+    Matches=Match.objects.filter(
+        Q(Active=True) & ((Q(started=False) & Q(want_to_start__lt=((timezone.now()- timezone.timedelta(seconds=43200)))) | (Q(started=True) & Q(date_started__lt=(timezone.now()- timezone.timedelta(seconds=50400))))))
+    )
+    for target_match in Matches:
+
+        target_match.delete()
+    return
+
+
+
+        
+
 def check_matches(account:Account):
     any_match=Match.objects.filter(
         ((Q(Creator=account))|(Q(Joined=account))) & (Q(Active=True))
@@ -91,6 +104,7 @@ def logout_user(request):
 
 def home(request):
     account=rewrite_activity(request.user)
+    delete_matches()
     if 'kick' in request.POST:
         party_to_delete=Party.objects.get(id=request.POST.get('kick', None))
         party_to_delete.delete()
@@ -318,6 +332,7 @@ def match(request,pk):
 
     elif 'start' in request.POST:
         The_Match.started=True
+        The_Match.date_started=(timezone.now()- timezone.timedelta(seconds=21600))
         The_Match.save()
         return redirect('match',The_Match.id)
 
@@ -407,8 +422,9 @@ def history_matches(request):
     else:
         context['current']=None
 
-    match_completed=result.objects.filter((Q(target_match__Active=False)&(Q(target_match__Creator=account)|Q(target_match__Joined=account)))).order_by('-target_match__date_created').distinct()
+    match_completed=result.objects.filter((Q(target_match__Active=False)&(Q(target_match__Creator=account)|Q(target_match__Joined__in=[account])))).order_by('-target_match__date_started').distinct()
     context['history_matches']=match_completed
+    print(match_completed)
 
     return render(request,'history_matches.html',context)
 
@@ -417,15 +433,13 @@ def search_match(request):
     account=rewrite_activity(request.user)
     Matches=Match.objects.annotate(num_joined=Count('Joined')).filter(Q(num_joined__lte=2) & Q(Active=True) & Q(started=False))
     number_matches=Matches.count()
-    for match in Matches:
-        if (match.want_to_start + timezone.timedelta(seconds=21600)) <= (timezone.now()- timezone.timedelta(seconds=21600)):
-            match.delete()
-    
+    delete_matches()
     context={
         'account':account,
         'matches':Matches,
         'total_matches':number_matches,
-        'notifications':calculate_notifications(account)
+        'notifications':calculate_notifications(account),
+        'time_server':timezone.now()+ timezone.timedelta(seconds=21600)
     }
     
     if request.method == 'POST':
@@ -478,8 +492,44 @@ def join_match(request,pk):
     return render(request,'join_match.html',context)
 
 def submit_result(request,pk):
+    def end_match_function(creator_win:bool,Match:Match,Result:result):
+        for x in Match.Joined.all():
+            if x != Match.Creator.party_group.Joined:
+                joined_leader=x.party_group.Creator
+                break
+        
+        if creator_win:
+            Result.winner.add(Match.Creator,Match.Creator.party_group.Joined)
+            Result.looser.add(joined_leader,joined_leader.party_group.Joined)
+            creator_points=35
+            joined_points=-35
+
+            
+        else:
+            Result.looser.add(Match.Creator,Match.Creator.party_group.Joined)
+            Result.winnerr.add(joined_leader,joined_leader.party_group.Joined)
+            creator_points=-35
+            joined_points=35
+
+        Match.Creator.played_matches+=1
+        Match.Creator.points+=creator_points
+        Match.Creator.party_group.Joined.played_matches+=1
+        Match.Creator.party_group.Joined.points+=creator_points
+        joined_leader.played_matches+=1
+        joined_leader.points+=joined_points
+        joined_leader.party_group.Joined.played_matches+=1
+        joined_leader.party_group.Joined.points+=joined_points
+        Match.Creator.save()
+        Match.Creator.party_group.Joined.save()
+        joined_leader.save()
+        joined_leader.party_group.Joined.save()
+        return
+
     account=rewrite_activity(request.user)
     targeted_match=Match.objects.get(id=pk)
+    if account != targeted_match.Creator and account != targeted_match.Joined.all()[1].party_group.Creator:
+        print(True)
+
     try:
         Result=result.objects.get(target_match=targeted_match)
 
@@ -492,13 +542,11 @@ def submit_result(request,pk):
         oponent=request.POST.get('oponent')
         if targeted_match.Creator == account:
             Result.res_creator=f'{creator}-{oponent}'
-            print(Result)
-            Result.save()
-            return redirect('submit_result',targeted_match.id)
-
         else:
             Result.res_joined=f'{creator}-{oponent}'
-            Result.save()
+            
+        Result.save()
+        return redirect('submit_result',targeted_match.id)
 
     if Result.res_joined!='NONE' and Result.res_creator!='NONE' and Result.submited == False:
         if not (Result.res_joined==Result.res_creator):
@@ -523,33 +571,22 @@ def submit_result(request,pk):
                     else:
                         score_joined=int(score)
             if score_creator>score_joined:
-                Result.winner=targeted_match.Creator
-                Result.looser=targeted_match.Joined
-                targeted_match.Creator.points+=35
-                targeted_match.Creator.wins+=1
-                targeted_match.Joined.points-=35
+                end_match_function(True,targeted_match,Result)
 
 
             elif score_creator<score_joined:
-                Result.winner=targeted_match.Joined
-                Result.looser=targeted_match.Creator
-                targeted_match.Creator.points-=35
-                targeted_match.Joined.wins+=1
-                targeted_match.Joined.points+=35
+                end_match_function(False,targeted_match,Result)
 
             else:
                 Result.winner=None
                 Result.looser=None
 
-            targeted_match.Creator.played_matches+=1
-            targeted_match.Joined.played_matches+=1
-            targeted_match.Creator.save()
-            targeted_match.Joined.save()
-            targeted_match.save()
             Result.creator_score=score_creator
             Result.joined_score=score_joined
+            Result.type_match= 'ranked' if targeted_match.ranked else 'casual'
             Result.submited=True
             Result.save()
+            
             messages.info(request,'The match was successfully completed')
             return redirect ('history_matches')
 

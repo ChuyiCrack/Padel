@@ -117,44 +117,6 @@
     margin: 10px 0;
 }
 
-
-
-.input_container{
-    display: flex;
-    border: 2px solid #000;
-    justify-content: center;
-    width: fit-content;
-    margin: auto;
-    margin-bottom: 20px;
-    margin-top: 20px;
-    border-radius: 5px;
-}
-
-.input_container input{
-    width: 100px;
-}
-
-.input_container label{
-    display: inline-block;
-    width: 100px;
-    text-align: center;
-}
-
-#texti{
-    text-align: center;
-}
-
-form #help{
-    text-align: center;
-    margin: 20px;
-}
-
-form .button_container{
-    display: flex;
-    width: 100%;
-    justify-content: center;
-}
-
 .waiting{
     text-align: center;
     margin: auto;
@@ -183,7 +145,7 @@ form .button_container{
 /*/History PArt/*/
 .box_matches{
     border-radius: 10px;
-    width: 75%;
+    width: 80%;
     height: 210px;
     border: 2px solid #000;
     margin: auto;
@@ -226,6 +188,7 @@ form .button_container{
     text-align: center;
     align-items: center;
     width: 100%;
+    overflow-x: hidden;
 }
 
 .main_history h2{
@@ -236,8 +199,73 @@ form .button_container{
     border-bottom: 2px solid #000;
 }
 
+.ranked{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    overflow-x: hidden;
+    border-bottom: 2px solid #000;
+    height: 70px;
+}
+
+
+.looser{
+    width: fit-content;
+    height: 100%;
+}
+.winner{
+    width: fit-content;   
+}
+
+.profile_img{
+    margin-top: 5px;
+    width: 55px;
+    height: 55px;
+}
+
+.subcointainer_2{
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+    margin: auto;
+    overflow-x: hidden;
+    align-items: center;
+    
+}
+
+.ranked_texti p{
+    margin: 0 12px;
+    text-align: center;
+    font-weight: 600;
+}
+#text_display_winlost{
+    font-size: 12px;
+
+}
+
+.won{
+   background-color: rgb(67, 223, 67); 
+}
+
+.lost{
+    background-color: rgb(221, 67, 67);
+}
+
+.link_results_match{
+    text-decoration: none;
+    color: #000;
+}
 @media only screen and (min-width: 700px) {
     .box_matches{
         width: 500px;
+    }
+
+    .profile_img{
+        width: 65px;
+        height: 65px;
+    }
+
+    .ranked{
+        height: 75px;
     }
 }

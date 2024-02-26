@@ -1,0 +1,111 @@
+.input_container{
+    display: flex;
+    border: 2px solid #000;
+    justify-content: center;
+    width: fit-content;
+    margin: auto;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    border-radius: 5px;
+}
+
+.input_container input{
+    width: 100px;
+}
+
+.input_container label{
+    display: inline-block;
+    width: 100px;
+    text-align: center;
+}
+
+#texti{
+    text-align: center;
+}
+
+form #help{
+    text-align: center;
+    margin: 20px;
+}
+
+form .button_container{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+
+.player img{
+    width: 100px;
+    height: 100px;
+    margin: 0;
+}
+
+.player{
+    text-align: center;
+}
+
+.subcointainer{
+    display: flex;
+    flex-direction: row;
+    border: 2px solid #000;
+}
+
+.player p{
+    margin: 0;
+    width: 100px;
+    overflow-x: hidden;
+}
+
+.user_creator{
+    margin: 0;
+}
+
+
+
+.all_teams{
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+}
+
+.team_1{
+    margin: auto;
+    width: fit-content;
+    margin-bottom: 20px;
+}
+
+.creator{
+    background-color: rgb(96, 210, 255);
+}
+
+.oponent{
+    background-color: rgb(238, 72, 60);
+}
+
+.team{
+    margin: 0;
+    text-align: center;
+    border-right: 2px solid #000;
+    border-top: 2px solid #000;
+    border-left: 2px solid #000;
+}
+
+
+.waiting img{
+    width: 70px;
+    margin: auto;
+}
+
+.waiting p{
+    text-align: center;
+    font-size: 20px;
+    margin: 15px;
+    font-weight: 700;
+}
+.waiting{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+

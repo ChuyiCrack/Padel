@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Submit Result</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'history.css' %}">
+    <link rel="stylesheet" href="{% static 'results.css' %}">
     <script>
         var reloadInterval = 15000;
         var Creatorsend = '{{result.res_creator}}';
@@ -36,41 +36,48 @@
 <body>
     {% include 'navbar.html' %}
     <p id="texti">Is importat to be really <b>honest</b> when you are uploading the results.</p>
-    <div class="main_box">
-        <div class="principal_box inf">
-            <img class="enemie" src="{{match.Creator.profile_picture.url}}" alt="">
-                    <div class="sub_box">
-                        <p class="name_acc">{{match.Creator.owner.username}}</p>
-                            <div class="third_box">
-                                <img id="trophy" src="../../media/all_stuff/Trophy.png" alt="">
-                                <p>{{match.Creator.points}}</p>
-                            </div>                
-                    </div>
-        </div>
-        <h2 id="vs">VS</h2>
-        <div class="principal_box inf">
-            <img class="enemie" src="{{match.Joined.profile_picture.url}}" alt="">
-                <div class="sub_box">
-                    <p class="name_acc">{{match.Joined.owner.username}}</p>
-                    <div class="third_box">
-                        <img id="trophy" src="../../media/all_stuff/Trophy.png" alt="">
-                        <p>{{match.Joined.points}}</p>
-                    </div>                
+    <div class="all_teams">
+        <div class="team_1">
+            <p class="team creator">Team 1</p>
+            <div class="subcointainer">
+                <div class="player">
+                    <img class="user_creator" src="{{match.Creator.profile_picture.url}}" alt="">
+                    <p class="user_creator">{{match.Creator}}</p>
                 </div>
-        </div>   
+                <div class="player">
+                    <img src="{{match.Creator.party_group.Joined.profile_picture.url}}" alt="">
+                    <p>{{match.Creator.party_group.Joined}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="team_1">
+            <p class="team oponent">Team 2</p>
+            <div class="subcointainer">
+                <div class="player">
+                    <img class="user_creator" src="{{match.Joined.all.1.party_group.Creator.profile_picture.url}}" alt="">
+                    <p class="user_creator">{{match.Joined.all.1.party_group.Creator}}</p>
+                </div>
+                <div class="player">
+                    <img src="{{match.Joined.all.1.party_group.Joined.profile_picture.url}}" alt="">
+                    <p>{{match.Joined.all.1.party_group.Joined}}</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
     </div>
     <form method="post">
         {% csrf_token %}
-        <p id="help">Put the number of sets that each one won on the inputs of below</p>
+        <p id="help">Put the number of sets that each team won on the inputs of below</p>
         {% for message in messages %}
             <p id="message">{{message}}</p>
         {% endfor %}
         <div class="input_container">
-            <label for="creator">{{match.Creator}}</label>
+            <label class="creator" for="creator">Team 1</label>
             <input type="number" name="creator" id="creator" max="6" min="0">
         </div>
         <div class="input_container">
-            <label for="oponent">{{match.Joined}}</label>
+            <label class="oponent" for="oponent">Team 2</label>
             <input type="number" name="oponent" id="oponent" max="6" min="0">
         </div>
         <div class="button_container">
@@ -86,8 +93,12 @@
         {% endif %}
     
     {% else %}
-    
-    
+        {% if not result.res_joined == 'NONE' %}
+        <div class="waiting">
+            <p>Waiting for the other player to sending results</p>
+            <img src="../../media/all_stuff/tennis.gif" alt="">
+        </div>
+        {% endif %}
     {% endif %}    
 
     

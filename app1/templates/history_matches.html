@@ -66,8 +66,26 @@
         <div class="box_matches">
             {% if history_matches|length > 0 %}
                 {% for result in history_matches  %}
-                    {% if result.ranked %}
-
+                    <a class="link_results_match" href="">
+                    {% if result.type_match == 'ranked' %}
+                        <div class="ranked {% if account in result.winner.all %} won {% else %} lost {% endif%}">
+                            <div class="subcointainer_2">
+                                <div class="winner">
+                                    {% for player in result.winner.all %}
+                                         <img class="profile_img" src="{{player.profile_picture.url}}" alt="">
+                                    {% endfor %}
+                                 </div>
+                                 <div class="ranked_texti">
+                                    <p>{% if result.target_match.Creator in result.winner.all %} {{result.creator_score}} - {{result.joined_score}} {% else %} {{result.joined_score}} - {{result.creator_score}} {% endif %}</p>
+                                    <p id="text_display_winlost">{% if account in result.winner.all %} won {% else %} lost {% endif %}</p>
+                                 </div>
+                                 <div class="looser">
+                                     {% for player in result.looser.all %}
+                                         <img class="profile_img" src="{{player.profile_picture.url}}" alt="">
+                                    {% endfor %}
+                                 </div>
+                            </div>
+                        </div>
                     {% else %}
                         <div class="casual">
                             <div class="allresult_players">
@@ -96,6 +114,7 @@
                             </div>
                         </div>
                     {% endif %}
+                    </a>
                 {% endfor %}
             {% else %}
                 <p>No results</p>
