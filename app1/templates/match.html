@@ -47,8 +47,8 @@
         {% if not match.started %}
             <p>The match starts at <b>{{match.want_to_start|date:"M.d h:i A"}}</b></p>
         
-        {% else %}
-            {% if account == match.Creator or account == match.Joined.all.1.party_group.Creator %}
+        {% elif match.ranked %}
+            {% if account == account.party_group.Creator %}
                 <p>When you finish upload the results <a href="{% url 'submit_result' match.id %}">here</a></p>
             {% else %}
                 <p>Results can onlly be sent by <b>{{account.party_group.Creator}}</b></p>
@@ -114,7 +114,7 @@
                     {% csrf_token %}
                     <button name="start">Start Match</button>
                 </form>
-            {% else %}
+            {% elif not match.ranked %}
                 <form class="form_leave" method="post">
                     {% csrf_token %}
                     <button name="end">End Match</button>

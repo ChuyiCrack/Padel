@@ -29,6 +29,7 @@ table{
 
 th,td{
     padding:5px;
+    text-align: center;
 }
 .box_points p{
     margin: 0;

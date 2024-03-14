@@ -41,8 +41,8 @@
             <p class="team creator">Team 1</p>
             <div class="subcointainer">
                 <div class="player">
-                    <img class="user_creator" src="{{match.Creator.profile_picture.url}}" alt="">
-                    <p class="user_creator">{{match.Creator}}</p>
+                    <img  src="{{match.Creator.profile_picture.url}}" alt="">
+                    <p >{{match.Creator}}</p>
                 </div>
                 <div class="player">
                     <img src="{{match.Creator.party_group.Joined.profile_picture.url}}" alt="">
@@ -53,14 +53,12 @@
         <div class="team_1">
             <p class="team oponent">Team 2</p>
             <div class="subcointainer">
-                <div class="player">
-                    <img class="user_creator" src="{{match.Joined.all.1.party_group.Creator.profile_picture.url}}" alt="">
-                    <p class="user_creator">{{match.Joined.all.1.party_group.Creator}}</p>
-                </div>
-                <div class="player">
-                    <img src="{{match.Joined.all.1.party_group.Joined.profile_picture.url}}" alt="">
-                    <p>{{match.Joined.all.1.party_group.Joined}}</p>
-                </div>
+                    {% for player in joined %}
+                        <div class="player">
+                            <img class="{% if forloop.counter == 1 %}user_creator{% endif %}" src="{{player.profile_picture.url}}" alt="">
+                            <p class="{% if forloop.counter == 1 %}user_creator{% endif %}">{{player}}</p>
+                        </div>
+                    {% endfor %}
             </div>
         </div>
 

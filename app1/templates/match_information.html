@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Match Information</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'inf_match.css' %}">
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <div class="main_box">
+        {% if match.ranked %}
+            <div class="match_ranked_box">
+                <div class="match_information">
+                    <h1>Ranked Match</h1>
+                    <p>The match started at <b>{{match.date_started}}</b></p>
+                    <p>Played at the court <b>{{match.court}}</b></p>
+                </div>
+                <div class="sub_box">
+                    <div id="team_1">
+                        {% for winner in result.winner.all %}
+                            <a class="profile_link" href="{% url 'profile' winner.id %}">
+                                <div class="player">
+                                    <img class="{% if forloop.counter == 1 %} creator_image {% else %} creator_tm8 {% endif %}" src="{{winner.profile_picture.url}}" alt="">
+                                    <p>{{winner}}</p>
+                                </div>
+                            </a>
+                        {% endfor %}  
+                    </div>
+                    <div id="team_2">
+                        {% for winner in result.looser.all %}
+                            <a class="profile_link" href="{% url 'profile' winner.id %}">
+                                <div class="player">
+                                    <img class="{% if forloop.counter == 1 %} creator_image {% else %} creator_tm8 {% endif %}" src="{{winner.profile_picture.url}}" alt="">
+                                    <p>{{winner}}</p>
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="result_box">
+                    <p class="result">{% if result.target_match.Creator in result.winner.all %} {{result.creator_score}} {% else %} {{result.joined_score}} {% endif %}</p>
+                    <p class="result">-</p>
+                    <p class="result">{% if result.target_match.Creator in result.winner.all %} {{result.joined_score}} {% else %} {{result.creator_score}} {% endif %}</p>
+
+                </div>
+            </div>
+        {% else %}
+            <h1>Casual Match</h1>
+            <h3>Players:</h3>
+            <div class="casual">
+                <div class="all_players">
+                    <div class="part">
+                        <a class="player_casual" href="{% url 'profile' result.target_match.Creator.id %}">
+                                <img class="player_img" src="{{result.target_match.Creator.profile_picture.url}}" alt="">
+                        </a>
+                        <a class="player_casual" href="{% url 'profile' result.target_match.Joined.all.0.id %}">
+                                <img class="player_img" src="{{result.target_match.Joined.all.0.profile_picture.url}}" alt="">
+                        </a>
+                    </div>
+                    <div class="part">
+                        {% for joined in result.target_match.Joined.all %}
+                            {% if forloop.counter != 1 %}
+                                <a class="player_casual" href="{% url 'profile' joined.id %}">
+                                        <img class="player_img" src="{{joined.profile_picture.url}}" alt="">
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <p class="info_casual">Played at: <b>{{result.target_match.court}}</b></p>
+                <p class="info_casual">Started at: <b>{{result.target_match.want_to_start}}</b></p>
+            </div>
+        {% endif %}
+    </div>
+    
+</body>
+</html>

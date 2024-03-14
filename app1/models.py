@@ -34,6 +34,11 @@ class Account(models.Model):
     last_activity=models.DateTimeField(default=timezone.now,blank=True)
     party_group=models.ForeignKey('Party',on_delete=models.SET_NULL,null=True, blank=True, default=None)
 
+    def calculate_winrate(self):
+        if self.played_matches == 0:
+            return 0
+        
+        return (self.wins / self.played_matches)*100
     def __str__(self):
         return self.owner.username
     

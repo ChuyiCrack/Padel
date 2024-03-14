@@ -20,5 +20,6 @@ urlpatterns =[
    path('notifications_party/',views.notifications_party,name='notifications_party'),
    path('change_profilepicture/',views.edit_profile_picture, name='profile_picture'),
    path('edit_bakground/',views.edit_background,name='background'),
-   path('search_friends/',views.search_friends, name='search_friends')
+   path('search_friends/',views.search_friends, name='search_friends'),
+   path('match_information/<int:pk>',views.match_information, name= 'match_information'),
 ]

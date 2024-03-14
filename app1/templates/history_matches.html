@@ -66,9 +66,10 @@
         <div class="box_matches">
             {% if history_matches|length > 0 %}
                 {% for result in history_matches  %}
-                    <a class="link_results_match" href="">
+                    <a class="link_results_match" href="{% url 'match_information' result.target_match.id %}">
                     {% if result.type_match == 'ranked' %}
                         <div class="ranked {% if account in result.winner.all %} won {% else %} lost {% endif%}">
+                            <p id="ranked_title">Ranked</p>
                             <div class="subcointainer_2">
                                 <div class="winner">
                                     {% for player in result.winner.all %}
@@ -108,9 +109,9 @@
                                 </div>
                             </div>
                             <div class="inf_casual_match">
-                                <p>Casual</p>
+                                <b><p>Casual</p></b>
                                 <p>{{result.target_match.court}}</p>
-                                <p>started at {{result.target_match.want_to_start|date:"M.d h:i A"}}</p>
+                                <p>started at <b>{{result.target_match.want_to_start|date:"M.d h:i A"}}</b></p>
                             </div>
                         </div>
                     {% endif %}

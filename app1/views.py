@@ -23,13 +23,11 @@ def delete_matches():
         Q(Active=True) & ((Q(started=False) & Q(want_to_start__lt=((timezone.now()- timezone.timedelta(seconds=43200)))) | (Q(started=True) & Q(date_started__lt=(timezone.now()- timezone.timedelta(seconds=50400))))))
     )
     for target_match in Matches:
-
+        if target_match.ranked:
+            pass
         target_match.delete()
     return
-
-
-
-        
+     
 
 def check_matches(account:Account):
     any_match=Match.objects.filter(
@@ -503,6 +501,8 @@ def submit_result(request,pk):
             Result.looser.add(joined_leader,joined_leader.party_group.Joined)
             creator_points=35
             joined_points=-35
+            Match.Creator.wins+=1
+            Match.Creator.party_group.Joined.wins+=1
 
             
         else:
@@ -510,6 +510,8 @@ def submit_result(request,pk):
             Result.winnerr.add(joined_leader,joined_leader.party_group.Joined)
             creator_points=-35
             joined_points=35
+            joined_leader.wins+=1
+            joined_leader.party_group.Joined.wins+=1
 
         Match.Creator.played_matches+=1
         Match.Creator.points+=creator_points
@@ -594,12 +596,12 @@ def submit_result(request,pk):
         messages.info(request,'The match was successfully completed')
         return redirect ('history_matches')
 
-
     context={
         'account':account,
         'match':targeted_match,
         'result':Result,
-        'notifications':calculate_notifications(account)
+        'notifications':calculate_notifications(account),
+        'joined':[player for player in targeted_match.Joined.all() if player != targeted_match.Creator.party_group.Joined]
     }
     return render(request,'submit_result.html',context)
 
@@ -706,3 +708,19 @@ def search_friends(request):
         context['filtered']=Selected_Users
         return render(request,'search_friends.html',context)
     return render(request,'search_friends.html',context)
+
+def match_information(request,pk):
+    account=rewrite_activity(request.user)
+    try:
+        targeted_match=Match.objects.get(id=pk)
+        match_result=result.objects.get(target_match=targeted_match)
+    except ObjectDoesNotExist:
+        messages.error(request,'We couldnt find that match')
+        return redirect('history_matches')
+    context={
+        'account':account,
+        'notifications':calculate_notifications(account),
+        'match':targeted_match,
+        'result':match_result
+    }
+    return render(request,'match_information.html',context)

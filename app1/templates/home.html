@@ -38,7 +38,7 @@
                 <tr>
                     <td>{{account.played_matches}}</td>
                     <td>{{account.wins}}</td>
-                    <td>%{{account.calculate_winrate|floatformat:2 }}</td>
+                    <td>%{% if account.calculate_winrate == 0 %} 0 {% else %} {{account.calculate_winrate|floatformat:2}} {% endif %}</td>
                 </tr>
             </table>
     
